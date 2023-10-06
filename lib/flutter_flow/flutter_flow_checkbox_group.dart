@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 
 class FlutterFlowCheckboxGroup extends StatefulWidget {
   const FlutterFlowCheckboxGroup({
+    Key? key,
     required this.options,
     required this.onChanged,
     required this.controller,
@@ -17,7 +18,8 @@ class FlutterFlowCheckboxGroup extends StatefulWidget {
     this.checkboxBorderRadius,
     required this.checkboxBorderColor,
     this.initialized = true,
-  });
+    this.unselectedTextStyle,
+  }) : super(key: key);
 
   final List<String> options;
   final void Function(List<String>)? onChanged;
@@ -30,6 +32,7 @@ class FlutterFlowCheckboxGroup extends StatefulWidget {
   final BorderRadius? checkboxBorderRadius;
   final Color checkboxBorderColor;
   final bool initialized;
+  final TextStyle? unselectedTextStyle;
 
   @override
   State<FlutterFlowCheckboxGroup> createState() =>
@@ -78,6 +81,8 @@ class _FlutterFlowCheckboxGroupState extends State<FlutterFlowCheckboxGroup> {
         itemBuilder: (context, index) {
           final option = widget.options[index];
           final selected = selectedValues.contains(option);
+          final unselectedTextStyle =
+              widget.unselectedTextStyle ?? widget.textStyle;
           return Theme(
             data: ThemeData(unselectedWidgetColor: widget.checkboxBorderColor),
             child: Padding(
@@ -111,7 +116,7 @@ class _FlutterFlowCheckboxGroupState extends State<FlutterFlowCheckboxGroup> {
                     padding: widget.labelPadding ?? EdgeInsets.zero,
                     child: Text(
                       widget.options[index],
-                      style: widget.textStyle,
+                      style: selected ? widget.textStyle : unselectedTextStyle,
                     ),
                   ),
                 ],

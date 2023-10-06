@@ -48,7 +48,9 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -91,7 +93,7 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: AlignmentDirectional(0.00, 0.00),
                   child: Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 75.0, 0.0, 0.0),
@@ -208,7 +210,7 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: AlignmentDirectional(0.00, 0.00),
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(
                         100.0, 100.0, 100.0, 100.0),
@@ -223,8 +225,10 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                           context: context,
                           builder: (context) {
                             return GestureDetector(
-                              onTap: () => FocusScope.of(context)
-                                  .requestFocus(_model.unfocusNode),
+                              onTap: () => _model.unfocusNode.canRequestFocus
+                                  ? FocusScope.of(context)
+                                      .requestFocus(_model.unfocusNode)
+                                  : FocusScope.of(context).unfocus(),
                               child: Padding(
                                 padding: MediaQuery.viewInsetsOf(context),
                                 child: Container(
@@ -235,7 +239,7 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                               ),
                             );
                           },
-                        ).then((value) => setState(() {}));
+                        ).then((value) => safeSetState(() {}));
                       },
                       text: 'Enviar',
                       options: FFButtonOptions(

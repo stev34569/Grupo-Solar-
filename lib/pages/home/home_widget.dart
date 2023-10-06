@@ -4,6 +4,7 @@ import '/components/navbar/navbar_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -50,8 +51,14 @@ class _HomeWidgetState extends State<HomeWidget> {
     return StreamBuilder<List<PropiedadRecord>>(
       stream: queryPropiedadRecord(
         queryBuilder: (propiedadRecord) => propiedadRecord
-            .where('filtrado', arrayContains: _model.choiceChipsValue)
-            .where('publicado', isEqualTo: true),
+            .where(
+              'filtrado',
+              arrayContains: _model.choiceChipsValue,
+            )
+            .where(
+              'publicado',
+              isEqualTo: true,
+            ),
       ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
@@ -72,7 +79,9 @@ class _HomeWidgetState extends State<HomeWidget> {
         }
         List<PropiedadRecord> homePropiedadRecordList = snapshot.data!;
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).tertiary,
@@ -98,7 +107,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, -0.92),
+                                    alignment:
+                                        AlignmentDirectional(0.00, -0.92),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -138,7 +148,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                         Duration(
                                                             milliseconds: 100),
                                                         () async {
-                                                          setState(() {
+                                                          safeSetState(() {
                                                             _model.simpleSearchResults =
                                                                 TextSearch(
                                                               homePropiedadRecordList
@@ -317,7 +327,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                     ),
                                   ),
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: AlignmentDirectional(0.00, 0.00),
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 20.0, 0.0, 0.0),
@@ -331,7 +341,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                           Expanded(
                                             child: Align(
                                               alignment: AlignmentDirectional(
-                                                  0.0, 0.0),
+                                                  0.00, 0.00),
                                               child: Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(
@@ -401,6 +411,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                           List<String>>(
                                                     ['Todos'],
                                                   ),
+                                                  wrapped: true,
                                                 ),
                                               ),
                                             ),
@@ -604,7 +615,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                               children: [
                                                                                 if (propiedadesGItem.favoritos.contains(currentUserReference))
                                                                                   Align(
-                                                                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                                                                    alignment: AlignmentDirectional(1.00, 0.00),
                                                                                     child: Padding(
                                                                                       padding: EdgeInsetsDirectional.fromSTEB(55.0, 0.0, 0.0, 0.0),
                                                                                       child: InkWell(
@@ -614,9 +625,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                                         highlightColor: Colors.transparent,
                                                                                         onTap: () async {
                                                                                           await propiedadesGItem.reference.update({
-                                                                                            'favoritos': FieldValue.arrayRemove([
-                                                                                              currentUserReference
-                                                                                            ]),
+                                                                                            ...mapToFirestore(
+                                                                                              {
+                                                                                                'favoritos': FieldValue.arrayRemove([
+                                                                                                  currentUserReference
+                                                                                                ]),
+                                                                                              },
+                                                                                            ),
                                                                                           });
                                                                                         },
                                                                                         child: Icon(
@@ -635,9 +650,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                                     highlightColor: Colors.transparent,
                                                                                     onTap: () async {
                                                                                       await propiedadesGItem.reference.update({
-                                                                                        'favoritos': FieldValue.arrayUnion([
-                                                                                          currentUserReference
-                                                                                        ]),
+                                                                                        ...mapToFirestore(
+                                                                                          {
+                                                                                            'favoritos': FieldValue.arrayUnion([
+                                                                                              currentUserReference
+                                                                                            ]),
+                                                                                          },
+                                                                                        ),
                                                                                       });
                                                                                     },
                                                                                     child: Icon(
@@ -793,7 +812,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                           child: Align(
                                                             alignment:
                                                                 AlignmentDirectional(
-                                                                    -1.0, 0.0),
+                                                                    -1.00,
+                                                                    0.00),
                                                             child: Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
@@ -893,7 +913,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                           children: [
                                                                             if (propiedadesItem.favoritos.contains(currentUserReference))
                                                                               Align(
-                                                                                alignment: AlignmentDirectional(1.0, 0.0),
+                                                                                alignment: AlignmentDirectional(1.00, 0.00),
                                                                                 child: Padding(
                                                                                   padding: EdgeInsetsDirectional.fromSTEB(55.0, 0.0, 0.0, 0.0),
                                                                                   child: InkWell(
@@ -903,9 +923,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                                     highlightColor: Colors.transparent,
                                                                                     onTap: () async {
                                                                                       await propiedadesItem.reference.update({
-                                                                                        'favoritos': FieldValue.arrayRemove([
-                                                                                          currentUserReference
-                                                                                        ]),
+                                                                                        ...mapToFirestore(
+                                                                                          {
+                                                                                            'favoritos': FieldValue.arrayRemove([
+                                                                                              currentUserReference
+                                                                                            ]),
+                                                                                          },
+                                                                                        ),
                                                                                       });
                                                                                     },
                                                                                     child: Icon(
@@ -924,9 +948,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                                 highlightColor: Colors.transparent,
                                                                                 onTap: () async {
                                                                                   await propiedadesItem.reference.update({
-                                                                                    'favoritos': FieldValue.arrayUnion([
-                                                                                      currentUserReference
-                                                                                    ]),
+                                                                                    ...mapToFirestore(
+                                                                                      {
+                                                                                        'favoritos': FieldValue.arrayUnion([
+                                                                                          currentUserReference
+                                                                                        ]),
+                                                                                      },
+                                                                                    ),
                                                                                   });
                                                                                 },
                                                                                 child: Icon(

@@ -116,6 +116,11 @@ class PropiedadRecord extends FirestoreRecord {
   bool get publicado => _publicado ?? false;
   bool hasPublicado() => _publicado != null;
 
+  // "distrito" field.
+  String? _distrito;
+  String get distrito => _distrito ?? '';
+  bool hasDistrito() => _distrito != null;
+
   void _initializeFields() {
     _id = castToType<int>(snapshotData['id']);
     _name = snapshotData['name'] as String?;
@@ -137,6 +142,7 @@ class PropiedadRecord extends FirestoreRecord {
     _favoritos = getDataList(snapshotData['favoritos']);
     _revision = snapshotData['revision'] as bool?;
     _publicado = snapshotData['publicado'] as bool?;
+    _distrito = snapshotData['distrito'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -191,6 +197,7 @@ Map<String, dynamic> createPropiedadRecordData({
   String? state,
   bool? revision,
   bool? publicado,
+  String? distrito,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -211,6 +218,7 @@ Map<String, dynamic> createPropiedadRecordData({
       'state': state,
       'revision': revision,
       'publicado': publicado,
+      'distrito': distrito,
     }.withoutNulls,
   );
 
@@ -242,7 +250,8 @@ class PropiedadRecordDocumentEquality implements Equality<PropiedadRecord> {
         e1?.state == e2?.state &&
         listEquality.equals(e1?.favoritos, e2?.favoritos) &&
         e1?.revision == e2?.revision &&
-        e1?.publicado == e2?.publicado;
+        e1?.publicado == e2?.publicado &&
+        e1?.distrito == e2?.distrito;
   }
 
   @override
@@ -266,7 +275,8 @@ class PropiedadRecordDocumentEquality implements Equality<PropiedadRecord> {
         e?.state,
         e?.favoritos,
         e?.revision,
-        e?.publicado
+        e?.publicado,
+        e?.distrito
       ]);
 
   @override

@@ -1,10 +1,13 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/opciones_propiedad/opciones_propiedad_widget.dart';
+import '/flutter_flow/flutter_flow_place_picker.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_video_player.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/place.dart';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -94,7 +97,9 @@ class _RevisarPropiedadWidgetState extends State<RevisarPropiedadWidget> {
         }
         final revisarPropiedadPropiedadRecord = snapshot.data!;
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -116,14 +121,17 @@ class _RevisarPropiedadWidgetState extends State<RevisarPropiedadWidget> {
                                   .secondaryBackground,
                             ),
                             child: Image.network(
-                              widget.propiedadImagen!,
+                              valueOrDefault<String>(
+                                widget.propiedadImagen,
+                                'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/grupo-solar-proyecto-fa8840/assets/18np8pijwior/pexels-expect-best-323780.jpg',
+                              ),
                               width: MediaQuery.sizeOf(context).width * 1.0,
                               height: MediaQuery.sizeOf(context).height * 0.953,
                               fit: BoxFit.cover,
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.91, -0.9),
+                            alignment: AlignmentDirectional(-0.91, -0.90),
                             child: InkWell(
                               splashColor: Colors.transparent,
                               focusColor: Colors.transparent,
@@ -168,8 +176,11 @@ class _RevisarPropiedadWidgetState extends State<RevisarPropiedadWidget> {
                                   context: context,
                                   builder: (context) {
                                     return GestureDetector(
-                                      onTap: () => FocusScope.of(context)
-                                          .requestFocus(_model.unfocusNode),
+                                      onTap: () => _model
+                                              .unfocusNode.canRequestFocus
+                                          ? FocusScope.of(context)
+                                              .requestFocus(_model.unfocusNode)
+                                          : FocusScope.of(context).unfocus(),
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
@@ -177,7 +188,7 @@ class _RevisarPropiedadWidgetState extends State<RevisarPropiedadWidget> {
                                       ),
                                     );
                                   },
-                                ).then((value) => setState(() {}));
+                                ).then((value) => safeSetState(() {}));
                               },
                               child: Icon(
                                 Icons.pending,
@@ -446,6 +457,36 @@ class _RevisarPropiedadWidgetState extends State<RevisarPropiedadWidget> {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                    FlutterFlowPlacePicker(
+                      iOSGoogleMapsApiKey: '',
+                      androidGoogleMapsApiKey: '',
+                      webGoogleMapsApiKey: '',
+                      onSelect: (place) async {
+                        setState(() => _model.placePickerValue = place);
+                      },
+                      defaultText: 'Select Location',
+                      icon: Icon(
+                        Icons.place,
+                        color: FlutterFlowTheme.of(context).info,
+                        size: 16.0,
+                      ),
+                      buttonOptions: FFButtonOptions(
+                        width: 200.0,
+                        height: 40.0,
+                        color: FlutterFlowTheme.of(context).primary,
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Lato',
+                                  color: FlutterFlowTheme.of(context).info,
+                                ),
+                        elevation: 2.0,
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                     Padding(

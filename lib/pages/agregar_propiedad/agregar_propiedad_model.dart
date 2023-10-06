@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
+import 'agregar_propiedad_widget.dart' show AgregarPropiedadWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class AgregarPropiedadModel extends FlutterFlowModel {
+class AgregarPropiedadModel extends FlutterFlowModel<AgregarPropiedadWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -39,12 +40,15 @@ class AgregarPropiedadModel extends FlutterFlowModel {
   // State field(s) for txtAgregarMetros widget.
   TextEditingController? txtAgregarMetrosController;
   String? Function(BuildContext, String?)? txtAgregarMetrosControllerValidator;
-  // State field(s) for DropDownProvincias widget.
-  String? dropDownProvinciasValue;
-  FormFieldController<String>? dropDownProvinciasValueController;
-  // State field(s) for DropDown widget.
-  String? dropDownValue;
-  FormFieldController<String>? dropDownValueController;
+  // State field(s) for DdProvincias widget.
+  String? ddProvinciasValue;
+  FormFieldController<String>? ddProvinciasValueController;
+  // State field(s) for DdCanton widget.
+  String? ddCantonValue;
+  FormFieldController<String>? ddCantonValueController;
+  // State field(s) for DdDistrito widget.
+  String? ddDistritoValue;
+  FormFieldController<String>? ddDistritoValueController;
   // State field(s) for txtAgregarDireccion widget.
   TextEditingController? txtAgregarDireccionController;
   String? Function(BuildContext, String?)?

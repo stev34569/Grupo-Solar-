@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import '/backend/backend.dart';
 
 import '../../auth/base_auth_user_provider.dart';
@@ -133,11 +134,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => ComentarioPropiedadWidget(),
         ),
         FFRoute(
-          name: 'Administrador',
-          path: '/administrador',
-          builder: (context, params) => AdministradorWidget(),
-        ),
-        FFRoute(
           name: 'AgregarEventosErrores',
           path: '/agregarEventosErrores',
           builder: (context, params) => AgregarEventosErroresWidget(),
@@ -153,27 +149,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => AdminEventsErrorsWidget(),
         ),
         FFRoute(
-          name: 'cuadrcula',
-          path: '/cuadrcula',
-          builder: (context, params) => CuadrculaWidget(),
-        ),
-        FFRoute(
           name: 'Propiedad',
           path: '/propiedad',
           builder: (context, params) => PropiedadWidget(
             idProducto: params.getParam('idProducto',
                 ParamType.DocumentReference, false, ['propiedad']),
           ),
-        ),
-        FFRoute(
-          name: 'AgregarEmpleado',
-          path: '/AgregarVideos',
-          builder: (context, params) => AgregarEmpleadoWidget(),
-        ),
-        FFRoute(
-          name: 'prueba',
-          path: '/prueba',
-          builder: (context, params) => PruebaWidget(),
         ),
         FFRoute(
           name: 'TodasPropiedades',
@@ -230,9 +211,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => ProfileUsuariosWidget(),
         ),
         FFRoute(
-          name: 'cambiarContrasenna',
-          path: '/cambiarContrasenna',
-          builder: (context, params) => CambiarContrasennaWidget(),
+          name: 'CambioContrasenna',
+          path: '/CambioContrasenna',
+          builder: (context, params) => CambioContrasennaWidget(),
+        ),
+        FFRoute(
+          name: 'PerfilGrupoSolar',
+          path: '/perfilGrupoSolar',
+          builder: (context, params) => PerfilGrupoSolarWidget(),
+        ),
+        FFRoute(
+          name: 'Prueba',
+          path: '/prueba',
+          builder: (context, params) => PruebaWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],
@@ -459,4 +450,24 @@ class TransitionInfo {
   final Alignment? alignment;
 
   static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+}
+
+class RootPageContext {
+  const RootPageContext(this.isRootPage, [this.errorRoute]);
+  final bool isRootPage;
+  final String? errorRoute;
+
+  static bool isInactiveRootPage(BuildContext context) {
+    final rootPageContext = context.read<RootPageContext?>();
+    final isRootPage = rootPageContext?.isRootPage ?? false;
+    final location = GoRouter.of(context).location;
+    return isRootPage &&
+        location != '/' &&
+        location != rootPageContext?.errorRoute;
+  }
+
+  static Widget wrap(Widget child, {String? errorRoute}) => Provider.value(
+        value: RootPageContext(true, errorRoute),
+        child: child,
+      );
 }

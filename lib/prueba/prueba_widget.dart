@@ -1,13 +1,14 @@
 import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart'
+    as smooth_page_indicator;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'prueba_model.dart';
@@ -27,136 +28,186 @@ class _PruebaWidgetState extends State<PruebaWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final animationsMap = {
-    'iconButtonOnPageLoadAnimation1': AnimationInfo(
+    'containerOnPageLoadAnimation': AnimationInfo(
+      loop: true,
+      reverse: true,
       trigger: AnimationTrigger.onPageLoad,
       effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
+        MoveEffect(
+          curve: Curves.easeOut,
           delay: 0.ms,
-          duration: 300.ms,
-          begin: 0.0,
-          end: 1.0,
+          duration: 3200.ms,
+          begin: Offset(0.0, -80.0),
+          end: Offset(0.0, 0.0),
         ),
-        ScaleEffect(
+        MoveEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: Offset(0.5, 0.0),
-          end: Offset(0.0, 1.0),
-        ),
-      ],
-    ),
-    'iconButtonOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: Offset(0.5, 0.0),
-          end: Offset(0.0, 1.0),
-        ),
-      ],
-    ),
-    'iconButtonOnPageLoadAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: Offset(0.5, 0.0),
-          end: Offset(0.0, 1.0),
+          delay: 3200.ms,
+          duration: 3200.ms,
+          begin: Offset(0.0, 0.0),
+          end: Offset(0.0, -80.0),
         ),
       ],
     ),
     'textOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
+        VisibilityEffect(duration: 200.ms),
         FadeEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
+          delay: 200.ms,
+          duration: 300.ms,
           begin: 0.0,
           end: 1.0,
         ),
         MoveEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 60.0),
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: Offset(0.0, 20.0),
           end: Offset(0.0, 0.0),
         ),
-      ],
-    ),
-    'rowOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
+        ScaleEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 80.0),
-          end: Offset(0.0, 0.0),
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: Offset(0.9, 0.9),
+          end: Offset(1.0, 1.0),
         ),
       ],
     ),
     'textOnPageLoadAnimation2': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
+        VisibilityEffect(duration: 300.ms),
         FadeEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
+          delay: 300.ms,
+          duration: 300.ms,
           begin: 0.0,
           end: 1.0,
         ),
         MoveEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 100.0),
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: Offset(0.0, 20.0),
           end: Offset(0.0, 0.0),
+        ),
+        ScaleEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: Offset(0.9, 0.9),
+          end: Offset(1.0, 1.0),
         ),
       ],
     ),
     'textOnPageLoadAnimation3': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
+        VisibilityEffect(duration: 200.ms),
         FadeEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
+          delay: 200.ms,
+          duration: 300.ms,
           begin: 0.0,
           end: 1.0,
         ),
         MoveEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 120.0),
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: Offset(0.0, 20.0),
           end: Offset(0.0, 0.0),
+        ),
+        ScaleEffect(
+          curve: Curves.easeInOut,
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: Offset(0.9, 0.9),
+          end: Offset(1.0, 1.0),
+        ),
+      ],
+    ),
+    'textOnPageLoadAnimation4': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        VisibilityEffect(duration: 300.ms),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: Offset(0.0, 20.0),
+          end: Offset(0.0, 0.0),
+        ),
+        ScaleEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: Offset(0.9, 0.9),
+          end: Offset(1.0, 1.0),
+        ),
+      ],
+    ),
+    'textOnPageLoadAnimation5': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        VisibilityEffect(duration: 200.ms),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: Offset(0.0, 20.0),
+          end: Offset(0.0, 0.0),
+        ),
+        ScaleEffect(
+          curve: Curves.easeInOut,
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: Offset(0.9, 0.9),
+          end: Offset(1.0, 1.0),
+        ),
+      ],
+    ),
+    'textOnPageLoadAnimation6': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        VisibilityEffect(duration: 300.ms),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: Offset(0.0, 20.0),
+          end: Offset(0.0, 0.0),
+        ),
+        ScaleEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 300.ms,
+          begin: Offset(0.9, 0.9),
+          end: Offset(1.0, 1.0),
         ),
       ],
     ),
@@ -166,13 +217,6 @@ class _PruebaWidgetState extends State<PruebaWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => PruebaModel());
-
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -189,237 +233,410 @@ class _PruebaWidgetState extends State<PruebaWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).primaryBackground,
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: CachedNetworkImageProvider(
-                'https://images.unsplash.com/photo-1528114039593-4366cc08227d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aXRhbHl8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60',
-              ),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 44.0, 16.0, 0.0),
-                child: Row(
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ClipRRect(
+              child: Container(
+                width: double.infinity,
+                height: 420.0,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                ),
+                child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    FlutterFlowIconButton(
-                      borderColor: Colors.transparent,
-                      borderRadius: 30.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      fillColor: Color(0x33090F13),
-                      icon: Icon(
-                        Icons.arrow_back_rounded,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 20.0,
+                    Container(
+                      width: double.infinity,
+                      height: 600.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
-                      onPressed: () async {
-                        context.pop();
-                      },
+                      child: MasonryGridView.count(
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 10.0,
+                        itemCount: 11,
+                        itemBuilder: (context, index) {
+                          return [
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(0.0),
+                                    bottomRight: Radius.circular(16.0),
+                                    topLeft: Radius.circular(0.0),
+                                    topRight: Radius.circular(16.0),
+                                  ),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 120.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 160.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(0.0),
+                                    bottomRight: Radius.circular(16.0),
+                                    topLeft: Radius.circular(0.0),
+                                    topRight: Radius.circular(16.0),
+                                  ),
+                                  child: Image.network(
+                                    'https://picsum.photos/seed/32/600',
+                                    width: 100.0,
+                                    height: 0.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(16.0),
+                                    bottomRight: Radius.circular(0.0),
+                                    topLeft: Radius.circular(16.0),
+                                    topRight: Radius.circular(0.0),
+                                  ),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 80.0,
+                                    height: 180.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1434394354979-a235cd36269d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fG1vdW50YWluc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 160.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 180.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(16.0),
+                                    bottomRight: Radius.circular(0.0),
+                                    topLeft: Radius.circular(16.0),
+                                    topRight: Radius.circular(0.0),
+                                  ),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1445363692815-ebcd599f7621?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1vdW50YWluc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 190.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1540390769625-2fc3f8b1d50c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjN8fG1vdW50YWluc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 160.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1443632864897-14973fa006cf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzJ8fG1vdW50YWluc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 180.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(16.0),
+                                    bottomRight: Radius.circular(0.0),
+                                    topLeft: Radius.circular(16.0),
+                                    topRight: Radius.circular(0.0),
+                                  ),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1614597396930-cd6760b99f7c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzZ8fG1vdW50YWluc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
+                                    width: 120.0,
+                                    height: 190.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                            () => ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/seed/32/600',
+                                    width: 120.0,
+                                    height: 160.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                          ][index]();
+                        },
+                      ),
                     ).animateOnPageLoad(
-                        animationsMap['iconButtonOnPageLoadAnimation1']!),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 16.0, 0.0),
-                          child: FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 30.0,
-                            borderWidth: 1.0,
-                            buttonSize: 40.0,
-                            fillColor: Color(0x33090F13),
-                            icon: Icon(
-                              Icons.ios_share,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 20.0,
-                            ),
-                            onPressed: () {
-                              print('IconButton pressed ...');
-                            },
-                          ).animateOnPageLoad(
-                              animationsMap['iconButtonOnPageLoadAnimation2']!),
-                        ),
-                        FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 30.0,
-                          borderWidth: 1.0,
-                          buttonSize: 40.0,
-                          fillColor: Color(0x33090F13),
-                          icon: Icon(
-                            Icons.favorite_border,
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            size: 20.0,
-                          ),
-                          onPressed: () {
-                            print('IconButton pressed ...');
-                          },
-                        ).animateOnPageLoad(
-                            animationsMap['iconButtonOnPageLoadAnimation3']!),
-                      ],
-                    ),
+                        animationsMap['containerOnPageLoadAnimation']!),
                   ],
                 ),
               ),
-              Container(
-                width: double.infinity,
-                height: 500.0,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0x00090F13), Color(0x991D2429)],
-                    stops: [0.0, 0.5],
-                    begin: AlignmentDirectional(0.0, -1.0),
-                    end: AlignmentDirectional(0, 1.0),
+            ),
+            Expanded(
+              child: Align(
+                alignment: AlignmentDirectional(0.00, 0.00),
+                child: Container(
+                  width: double.infinity,
+                  constraints: BoxConstraints(
+                    maxWidth: 670.0,
                   ),
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Firenze - Giardino Bardini',
-                        style:
-                            FlutterFlowTheme.of(context).displaySmall.override(
-                                  fontFamily: 'Lato',
-                                  color: Colors.white,
-                                  fontSize: 32.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                      ).animateOnPageLoad(
-                          animationsMap['textOnPageLoadAnimation1']!),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 12.0, 0.0, 12.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Container(
+                        width: double.infinity,
+                        height: 230.0,
+                        child: Stack(
                           children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '4 Night Stay',
-                                  style: FlutterFlowTheme.of(context)
-                                      .headlineSmall
-                                      .override(
-                                        fontFamily: 'Lato',
-                                        color: Colors.white,
-                                      ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 8.0, 0.0, 0.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      RatingBarIndicator(
-                                        itemBuilder: (context, index) => Icon(
-                                          Icons.radio_button_checked_rounded,
-                                          color: Colors.white,
-                                        ),
-                                        direction: Axis.horizontal,
-                                        rating: 4.0,
-                                        unratedColor: Color(0x9AFFFFFF),
-                                        itemCount: 5,
-                                        itemSize: 16.0,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            8.0, 0.0, 0.0, 0.0),
-                                        child: Text(
-                                          '4.7',
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 50.0),
+                              child: PageView(
+                                controller: _model.pageViewController ??=
+                                    PageController(initialPage: 0),
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        48.0, 0.0, 48.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Personalized recipe discovery',
+                                          textAlign: TextAlign.center,
                                           style: FlutterFlowTheme.of(context)
-                                              .bodySmall
+                                              .displaySmall
                                               .override(
                                                 fontFamily: 'Lato',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryBtnText,
+                                                fontWeight: FontWeight.bold,
                                               ),
+                                        ).animateOnPageLoad(animationsMap[
+                                            'textOnPageLoadAnimation1']!),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 16.0, 0.0, 0.0),
+                                          child: Text(
+                                            'I have some great food options here!! Yum yum!!',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelLarge,
+                                          ).animateOnPageLoad(animationsMap[
+                                              'textOnPageLoadAnimation2']!),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              height: 32.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                borderRadius: BorderRadius.circular(12.0),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        48.0, 0.0, 48.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Awesome Recipes',
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .displaySmall
+                                              .override(
+                                                fontFamily: 'Lato',
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ).animateOnPageLoad(animationsMap[
+                                            'textOnPageLoadAnimation3']!),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 16.0, 0.0, 0.0),
+                                          child: Text(
+                                            'I have some great food options here!! Yum yum!!',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelLarge,
+                                          ).animateOnPageLoad(animationsMap[
+                                              'textOnPageLoadAnimation4']!),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        48.0, 0.0, 48.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Personalized recipe discovery',
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .displaySmall
+                                              .override(
+                                                fontFamily: 'Lato',
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ).animateOnPageLoad(animationsMap[
+                                            'textOnPageLoadAnimation5']!),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 16.0, 0.0, 0.0),
+                                          child: Text(
+                                            'I have some great food options here!! Yum yum!!',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .labelLarge,
+                                          ).animateOnPageLoad(animationsMap[
+                                              'textOnPageLoadAnimation6']!),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              alignment: AlignmentDirectional(0.0, 0.0),
+                            ),
+                            Align(
+                              alignment: AlignmentDirectional(0.00, 1.00),
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 0.0, 8.0, 0.0),
-                                child: Text(
-                                  '\$220 USD',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Lato',
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                      ),
+                                    0.0, 0.0, 0.0, 10.0),
+                                child:
+                                    smooth_page_indicator.SmoothPageIndicator(
+                                  controller: _model.pageViewController ??=
+                                      PageController(initialPage: 0),
+                                  count: 3,
+                                  axisDirection: Axis.horizontal,
+                                  onDotClicked: (i) async {
+                                    await _model.pageViewController!
+                                        .animateToPage(
+                                      i,
+                                      duration: Duration(milliseconds: 500),
+                                      curve: Curves.ease,
+                                    );
+                                  },
+                                  effect:
+                                      smooth_page_indicator.ExpandingDotsEffect(
+                                    expansionFactor: 3.0,
+                                    spacing: 8.0,
+                                    radius: 16.0,
+                                    dotWidth: 8.0,
+                                    dotHeight: 8.0,
+                                    dotColor:
+                                        FlutterFlowTheme.of(context).alternate,
+                                    activeDotColor: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    paintStyle: PaintingStyle.fill,
+                                  ),
                                 ),
                               ),
                             ),
                           ],
-                        ).animateOnPageLoad(
-                            animationsMap['rowOnPageLoadAnimation']!),
+                        ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 4.0),
-                        child: Text(
-                          'Description',
-                          style:
-                              FlutterFlowTheme.of(context).bodySmall.override(
-                                    fontFamily: 'Lato',
-                                    color: Colors.white,
-                                  ),
-                        ).animateOnPageLoad(
-                            animationsMap['textOnPageLoadAnimation2']!),
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 12.0, 16.0, 0.0),
+                        child: FFButtonWidget(
+                          onPressed: () {
+                            print('Button pressed ...');
+                          },
+                          text: 'CONTADURÍA',
+                          options: FFButtonOptions(
+                            width: double.infinity,
+                            height: 56.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: Color(0xFFFFD401),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                .override(
+                                  fontFamily: 'Lato',
+                                  color: Color(0xFF0A1898),
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                            elevation: 4.0,
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15.0),
+                            hoverColor: FlutterFlowTheme.of(context).primary,
+                          ),
+                        ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 24.0),
-                        child: Text(
-                          'Non so se la bellezza salverà il mondo ma sicuramente aiuta. Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                          style:
-                              FlutterFlowTheme.of(context).titleSmall.override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Color(0x9AFFFFFF),
-                                  ),
-                        ).animateOnPageLoad(
-                            animationsMap['textOnPageLoadAnimation3']!),
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 12.0, 16.0, 44.0),
+                        child: FFButtonWidget(
+                          onPressed: () {
+                            print('Button pressed ...');
+                          },
+                          text: 'Skip',
+                          options: FFButtonOptions(
+                            width: double.infinity,
+                            height: 60.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            textStyle: FlutterFlowTheme.of(context).titleLarge,
+                            elevation: 0.0,
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(50.0),
+                            hoverColor: FlutterFlowTheme.of(context).alternate,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

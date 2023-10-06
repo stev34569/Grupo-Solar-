@@ -44,7 +44,7 @@ class _AgregadoExitoWidgetState extends State<AgregadoExitoWidget> {
     context.watch<FFAppState>();
 
     return Align(
-      alignment: AlignmentDirectional(0.0, 0.0),
+      alignment: AlignmentDirectional(0.00, 0.00),
       child: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
         child: Container(
@@ -124,8 +124,6 @@ class _AgregadoExitoWidgetState extends State<AgregadoExitoWidget> {
                               width: 1.0,
                             ),
                             borderRadius: BorderRadius.circular(8.0),
-                            hoverColor: Color(0xFF2B16ED),
-                            hoverTextColor: Colors.white,
                           ),
                         ),
                       ],

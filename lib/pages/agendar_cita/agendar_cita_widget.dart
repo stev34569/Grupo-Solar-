@@ -42,7 +42,9 @@ class _AgendarCitaWidgetState extends State<AgendarCitaWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -120,8 +122,10 @@ class _AgendarCitaWidgetState extends State<AgendarCitaWidget> {
                             context: context,
                             builder: (context) {
                               return GestureDetector(
-                                onTap: () => FocusScope.of(context)
-                                    .requestFocus(_model.unfocusNode),
+                                onTap: () => _model.unfocusNode.canRequestFocus
+                                    ? FocusScope.of(context)
+                                        .requestFocus(_model.unfocusNode)
+                                    : FocusScope.of(context).unfocus(),
                                 child: Padding(
                                   padding: MediaQuery.viewInsetsOf(context),
                                   child: Container(
@@ -132,7 +136,7 @@ class _AgendarCitaWidgetState extends State<AgendarCitaWidget> {
                                 ),
                               );
                             },
-                          ).then((value) => setState(() {}));
+                          ).then((value) => safeSetState(() {}));
                         },
                         text: 'Confirmar Cita',
                         options: FFButtonOptions(

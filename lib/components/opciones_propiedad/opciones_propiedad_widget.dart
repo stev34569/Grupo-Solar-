@@ -110,7 +110,7 @@ class _OpcionesPropiedadWidgetState extends State<OpcionesPropiedadWidget> {
                         ),
                       );
                     },
-                  ).then((value) => setState(() {}));
+                  ).then((value) => safeSetState(() {}));
                 },
                 text: 'Eliminar Propiedad',
                 options: FFButtonOptions(

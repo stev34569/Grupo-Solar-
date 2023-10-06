@@ -15,6 +15,34 @@
       ]
     },
     {
+      "collectionGroup": "ubicacionCanton",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "provincia",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ubicacionDistrito",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "canton",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "propiedad",
       "queryScope": "COLLECTION",
       "fields": [

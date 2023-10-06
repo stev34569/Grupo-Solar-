@@ -4,6 +4,7 @@ import '/components/navbar/navbar_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +44,9 @@ class _InfoWidgetState extends State<InfoWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -98,7 +101,8 @@ class _InfoWidgetState extends State<InfoWidget> {
                               children: [
                                 Expanded(
                                   child: Align(
-                                    alignment: AlignmentDirectional(-1.0, -1.0),
+                                    alignment:
+                                        AlignmentDirectional(-1.00, -1.00),
                                     child: Image.asset(
                                       'assets/images/Sin_ttulo-1_Mesa_de_trabajo_1.png',
                                       width: MediaQuery.sizeOf(context).width *
@@ -149,7 +153,7 @@ class _InfoWidgetState extends State<InfoWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0.0, 0.0),
+                            alignment: AlignmentDirectional(0.00, 0.00),
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 40.0, 0.0, 0.0),
@@ -158,7 +162,7 @@ class _InfoWidgetState extends State<InfoWidget> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
+                                    alignment: AlignmentDirectional(0.00, 0.00),
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 0.0, 5.0),
@@ -183,7 +187,7 @@ class _InfoWidgetState extends State<InfoWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0.0, 0.0),
+                            alignment: AlignmentDirectional(0.00, 0.00),
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 40.0, 0.0, 0.0),
@@ -230,8 +234,13 @@ class _InfoWidgetState extends State<InfoWidget> {
                                       context: context,
                                       builder: (context) {
                                         return GestureDetector(
-                                          onTap: () => FocusScope.of(context)
-                                              .requestFocus(_model.unfocusNode),
+                                          onTap: () => _model
+                                                  .unfocusNode.canRequestFocus
+                                              ? FocusScope.of(context)
+                                                  .requestFocus(
+                                                      _model.unfocusNode)
+                                              : FocusScope.of(context)
+                                                  .unfocus(),
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
@@ -242,7 +251,7 @@ class _InfoWidgetState extends State<InfoWidget> {
                                           ),
                                         );
                                       },
-                                    ).then((value) => setState(() {}));
+                                    ).then((value) => safeSetState(() {}));
                                   },
                                   child: Icon(
                                     Icons.phone_android,

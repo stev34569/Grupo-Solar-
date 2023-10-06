@@ -59,7 +59,9 @@ class _WelcomeWidgetState extends State<WelcomeWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -79,7 +81,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget>
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: AlignmentDirectional(0.00, 0.00),
                   child: Image.asset(
                     'assets/images/Sin_ttulo-1_Mesa_de_trabajo_1.png',
                     width: double.infinity,
@@ -88,7 +90,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget>
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-0.05, 0.47),
+                  alignment: AlignmentDirectional(-0.04, 0.47),
                   child: Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 150.0, 0.0, 0.0),

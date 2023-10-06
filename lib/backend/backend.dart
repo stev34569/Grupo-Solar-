@@ -10,8 +10,8 @@ import 'schema/propiedad_record.dart';
 import 'schema/bitacora_errores_record.dart';
 import 'schema/bitacora_logins_record.dart';
 import 'schema/reportes_record.dart';
-import 'schema/provincia_record.dart';
-import 'schema/canton_record.dart';
+import 'schema/ubicacion_canton_record.dart';
+import 'schema/ubicacion_distrito_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,8 +24,8 @@ export 'schema/propiedad_record.dart';
 export 'schema/bitacora_errores_record.dart';
 export 'schema/bitacora_logins_record.dart';
 export 'schema/reportes_record.dart';
-export 'schema/provincia_record.dart';
-export 'schema/canton_record.dart';
+export 'schema/ubicacion_canton_record.dart';
+export 'schema/ubicacion_distrito_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -212,75 +212,75 @@ Future<List<ReportesRecord>> queryReportesRecordOnce({
       singleRecord: singleRecord,
     );
 
-/// Functions to query ProvinciaRecords (as a Stream and as a Future).
-Future<int> queryProvinciaRecordCount({
+/// Functions to query UbicacionCantonRecords (as a Stream and as a Future).
+Future<int> queryUbicacionCantonRecordCount({
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      ProvinciaRecord.collection,
+      UbicacionCantonRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
-Stream<List<ProvinciaRecord>> queryProvinciaRecord({
+Stream<List<UbicacionCantonRecord>> queryUbicacionCantonRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      ProvinciaRecord.collection,
-      ProvinciaRecord.fromSnapshot,
+      UbicacionCantonRecord.collection,
+      UbicacionCantonRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<ProvinciaRecord>> queryProvinciaRecordOnce({
+Future<List<UbicacionCantonRecord>> queryUbicacionCantonRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      ProvinciaRecord.collection,
-      ProvinciaRecord.fromSnapshot,
+      UbicacionCantonRecord.collection,
+      UbicacionCantonRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-/// Functions to query CantonRecords (as a Stream and as a Future).
-Future<int> queryCantonRecordCount({
+/// Functions to query UbicacionDistritoRecords (as a Stream and as a Future).
+Future<int> queryUbicacionDistritoRecordCount({
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      CantonRecord.collection,
+      UbicacionDistritoRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
-Stream<List<CantonRecord>> queryCantonRecord({
+Stream<List<UbicacionDistritoRecord>> queryUbicacionDistritoRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      CantonRecord.collection,
-      CantonRecord.fromSnapshot,
+      UbicacionDistritoRecord.collection,
+      UbicacionDistritoRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<CantonRecord>> queryCantonRecordOnce({
+Future<List<UbicacionDistritoRecord>> queryUbicacionDistritoRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      CantonRecord.collection,
-      CantonRecord.fromSnapshot,
+      UbicacionDistritoRecord.collection,
+      UbicacionDistritoRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
@@ -422,8 +422,11 @@ Future maybeCreateUser(User user) async {
   }
 
   final userData = createUsersRecordData(
-    email: user.email,
-    displayName: user.displayName,
+    email: user.email ??
+        FirebaseAuth.instance.currentUser?.email ??
+        user.providerData.firstOrNull?.email,
+    displayName:
+        user.displayName ?? FirebaseAuth.instance.currentUser?.displayName,
     photoUrl: user.photoURL,
     uid: user.uid,
     phoneNumber: user.phoneNumber,

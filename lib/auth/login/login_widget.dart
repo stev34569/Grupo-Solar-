@@ -43,7 +43,9 @@ class _LoginWidgetState extends State<LoginWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -323,6 +325,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                     children: [
                       FFButtonWidget(
                         onPressed: () async {
+                          setState(() {
+                            FFAppState().InvitadoState = true;
+                          });
+
                           context.pushNamed('Home');
                         },
                         text: 'Ingresar como invitado',
@@ -339,7 +345,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               .override(
                                 fontFamily: 'Lato',
                                 color: FlutterFlowTheme.of(context).tertiary,
-                                fontSize: 20.0,
+                                fontSize: 18.0,
                                 fontWeight: FontWeight.w500,
                               ),
                           elevation: 2.0,

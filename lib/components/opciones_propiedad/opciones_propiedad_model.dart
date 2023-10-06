@@ -2,12 +2,13 @@ import '/components/confirmacion_eliminar/confirmacion_eliminar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'opciones_propiedad_widget.dart' show OpcionesPropiedadWidget;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class OpcionesPropiedadModel extends FlutterFlowModel {
+class OpcionesPropiedadModel extends FlutterFlowModel<OpcionesPropiedadWidget> {
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}

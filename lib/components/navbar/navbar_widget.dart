@@ -117,12 +117,12 @@ class _NavbarWidgetState extends State<NavbarWidget> {
                 borderWidth: 1.0,
                 buttonSize: 50.0,
                 icon: Icon(
-                  Icons.chat,
+                  Icons.info_outline,
                   color: Color(0xFF9299A1),
                   size: 24.0,
                 ),
                 onPressed: () async {
-                  context.pushNamed('Welcome');
+                  context.pushNamed('Info');
                 },
               ),
               StreamBuilder<List<UsersRecord>>(
@@ -155,47 +155,71 @@ class _NavbarWidgetState extends State<NavbarWidget> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 7.0),
-                        child: FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 100.0,
-                          borderWidth: 1.0,
-                          buttonSize: 60.0,
-                          fillColor: FlutterFlowTheme.of(context).primary,
-                          icon: Icon(
-                            Icons.add_home_sharp,
-                            color: Colors.white,
-                            size: 30.0,
-                          ),
-                          onPressed: () async {
-                            if ((valueOrDefault(currentUserDocument?.rol, '') ==
-                                    'cliente') ||
-                                (valueOrDefault(currentUserDocument?.rol, '') ==
-                                    'admin')) {
-                              context.pushNamed('AgregarPropiedad');
-                            } else {
-                              await showDialog(
-                                context: context,
-                                builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    title: Text('No permitido!'),
-                                    content: Text(
-                                        'Por favor inicia sesión como cliente para tener acceso a esta función'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        child: Text('De acuerdo'),
-                                      ),
-                                    ],
+                      Stack(
+                        children: [
+                          if (FFAppState().InvitadoState == true)
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 7.0),
+                              child: FlutterFlowIconButton(
+                                borderColor: Colors.transparent,
+                                borderRadius: 100.0,
+                                borderWidth: 1.0,
+                                buttonSize: 60.0,
+                                fillColor: FlutterFlowTheme.of(context).primary,
+                                icon: Icon(
+                                  Icons.add_home_sharp,
+                                  color: Colors.white,
+                                  size: 30.0,
+                                ),
+                                onPressed: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text('Error!'),
+                                        content: Text(
+                                            'Inicia sesión como cliente para acceder a esta función.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('De acuerdo!'),
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            }
-                          },
-                        ),
+                              ),
+                            ),
+                          if ((valueOrDefault(currentUserDocument?.rol, '') ==
+                                  'cliente') ||
+                              (valueOrDefault(currentUserDocument?.rol, '') ==
+                                  'admin'))
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 7.0),
+                              child: AuthUserStreamWidget(
+                                builder: (context) => FlutterFlowIconButton(
+                                  borderColor: Colors.transparent,
+                                  borderRadius: 100.0,
+                                  borderWidth: 1.0,
+                                  buttonSize: 60.0,
+                                  fillColor:
+                                      FlutterFlowTheme.of(context).primary,
+                                  icon: Icon(
+                                    Icons.add_home_sharp,
+                                    color: Colors.white,
+                                    size: 30.0,
+                                  ),
+                                  onPressed: () async {
+                                    context.pushNamed('AgregarPropiedad');
+                                  },
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ],
                   );

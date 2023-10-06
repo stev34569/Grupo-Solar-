@@ -4,7 +4,9 @@ import '/components/navbar/navbar_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'home_widget.dart' show HomeWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:text_search/text_search.dart';
 
-class HomeModel extends FlutterFlowModel {
+class HomeModel extends FlutterFlowModel<HomeWidget> {
   ///  Local state fields for this page.
 
   DocumentReference? imagenPropiedad;

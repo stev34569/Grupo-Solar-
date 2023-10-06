@@ -4,13 +4,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
 class FFAppState extends ChangeNotifier {
-  static final FFAppState _instance = FFAppState._internal();
+  static FFAppState _instance = FFAppState._internal();
 
   factory FFAppState() {
     return _instance;
   }
 
   FFAppState._internal();
+
+  static void reset() {
+    _instance = FFAppState._internal();
+  }
 
   Future initializePersistedState() async {}
 
@@ -29,6 +33,12 @@ class FFAppState extends ChangeNotifier {
   DocumentReference? get PropertieSelected => _PropertieSelected;
   set PropertieSelected(DocumentReference? _value) {
     _PropertieSelected = _value;
+  }
+
+  bool _InvitadoState = false;
+  bool get InvitadoState => _InvitadoState;
+  set InvitadoState(bool _value) {
+    _InvitadoState = _value;
   }
 }
 

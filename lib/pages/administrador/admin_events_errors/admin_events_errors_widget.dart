@@ -43,7 +43,9 @@ class _AdminEventsErrorsWidgetState extends State<AdminEventsErrorsWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -65,7 +67,7 @@ class _AdminEventsErrorsWidgetState extends State<AdminEventsErrorsWidget> {
                         topRight: Radius.circular(0.0),
                       ),
                     ),
-                    alignment: AlignmentDirectional(0.0, -1.0),
+                    alignment: AlignmentDirectional(0.00, -1.00),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -81,16 +83,21 @@ class _AdminEventsErrorsWidgetState extends State<AdminEventsErrorsWidget> {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      width: 120.0,
-                                      height: 120.0,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.network(
-                                        'https://picsum.photos/seed/842/600',
-                                        fit: BoxFit.cover,
+                                    AuthUserStreamWidget(
+                                      builder: (context) => Container(
+                                        width: 120.0,
+                                        height: 120.0,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Image.network(
+                                          valueOrDefault<String>(
+                                            currentUserPhoto,
+                                            'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/grupo-solar-proyecto-fa8840/assets/h69iw985149r/profile.png',
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ],

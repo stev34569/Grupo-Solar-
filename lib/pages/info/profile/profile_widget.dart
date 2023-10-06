@@ -1,7 +1,12 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
+import '/backend/firebase_storage/storage.dart';
 import '/components/navbar/navbar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,7 +46,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).tertiary,
@@ -66,7 +73,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             topRight: Radius.circular(0.0),
                           ),
                         ),
-                        alignment: AlignmentDirectional(0.0, -1.0),
+                        alignment: AlignmentDirectional(0.00, -1.00),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -84,17 +91,115 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          AuthUserStreamWidget(
-                                            builder: (context) => Container(
-                                              width: 120.0,
-                                              height: 120.0,
-                                              clipBehavior: Clip.antiAlias,
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              final selectedMedia =
+                                                  await selectMediaWithSourceBottomSheet(
+                                                context: context,
+                                                allowPhoto: true,
+                                              );
+                                              if (selectedMedia != null &&
+                                                  selectedMedia.every((m) =>
+                                                      validateFileFormat(
+                                                          m.storagePath,
+                                                          context))) {
+                                                setState(() => _model
+                                                    .isDataUploading = true);
+                                                var selectedUploadedFiles =
+                                                    <FFUploadedFile>[];
+
+                                                var downloadUrls = <String>[];
+                                                try {
+                                                  selectedUploadedFiles =
+                                                      selectedMedia
+                                                          .map((m) =>
+                                                              FFUploadedFile(
+                                                                name: m
+                                                                    .storagePath
+                                                                    .split('/')
+                                                                    .last,
+                                                                bytes: m.bytes,
+                                                                height: m
+                                                                    .dimensions
+                                                                    ?.height,
+                                                                width: m
+                                                                    .dimensions
+                                                                    ?.width,
+                                                                blurHash:
+                                                                    m.blurHash,
+                                                              ))
+                                                          .toList();
+
+                                                  downloadUrls =
+                                                      (await Future.wait(
+                                                    selectedMedia.map(
+                                                      (m) async =>
+                                                          await uploadData(
+                                                              m.storagePath,
+                                                              m.bytes),
+                                                    ),
+                                                  ))
+                                                          .where(
+                                                              (u) => u != null)
+                                                          .map((u) => u!)
+                                                          .toList();
+                                                } finally {
+                                                  _model.isDataUploading =
+                                                      false;
+                                                }
+                                                if (selectedUploadedFiles
+                                                            .length ==
+                                                        selectedMedia.length &&
+                                                    downloadUrls.length ==
+                                                        selectedMedia.length) {
+                                                  setState(() {
+                                                    _model.uploadedLocalFile =
+                                                        selectedUploadedFiles
+                                                            .first;
+                                                    _model.uploadedFileUrl =
+                                                        downloadUrls.first;
+                                                  });
+                                                } else {
+                                                  setState(() {});
+                                                  return;
+                                                }
+                                              }
+
+                                              await currentUserReference!
+                                                  .update(createUsersRecordData(
+                                                photoUrl:
+                                                    _model.uploadedFileUrl,
+                                              ));
+                                            },
+                                            child: Container(
+                                              width: 100.0,
+                                              height: 100.0,
                                               decoration: BoxDecoration(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryBackground,
                                                 shape: BoxShape.circle,
                                               ),
-                                              child: Image.network(
-                                                currentUserPhoto,
-                                                fit: BoxFit.cover,
+                                              child: AuthUserStreamWidget(
+                                                builder: (context) => Container(
+                                                  width: 120.0,
+                                                  height: 120.0,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Image.network(
+                                                    valueOrDefault<String>(
+                                                      currentUserPhoto,
+                                                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/grupo-solar-proyecto-fa8840/assets/h69iw985149r/profile.png',
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -206,177 +311,121 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       ),
                       Padding(
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
-                        child: ListView(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            if (valueOrDefault(currentUserDocument?.rol, '') ==
-                                'admin')
-                              AuthUserStreamWidget(
-                                builder: (context) => InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context
-                                        .pushNamed('EditarUsuarioSeleccionado');
-                                  },
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.person_search_rounded,
-                                    ),
-                                    title: Text(
-                                      'Empleados',
-                                      style: FlutterFlowTheme.of(context)
-                                          .headlineSmall,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color:
-                                          FlutterFlowTheme.of(context).accent2,
-                                      size: 20.0,
-                                    ),
-                                    tileColor: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    dense: false,
-                                  ),
+                            EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 20.0, 0.0, 0.0),
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    if (valueOrDefault(
+                                            currentUserDocument?.rol, '') ==
+                                        'admin')
+                                      AuthUserStreamWidget(
+                                        builder: (context) => InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed(
+                                                'EditarUsuarioSeleccionado');
+                                          },
+                                          child: ListTile(
+                                            leading: Icon(
+                                              Icons.person_search_rounded,
+                                            ),
+                                            title: Text(
+                                              'Empleados',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .headlineSmall,
+                                            ),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .accent2,
+                                              size: 20.0,
+                                            ),
+                                            tileColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            dense: false,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                        child: ListView(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            if (valueOrDefault(currentUserDocument?.rol, '') ==
-                                'admin')
-                              AuthUserStreamWidget(
-                                builder: (context) => InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context.pushNamed('Admin_EventsErrors');
-                                  },
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.receipt_long,
-                                    ),
-                                    title: Text(
-                                      'Reportes',
-                                      style: FlutterFlowTheme.of(context)
-                                          .headlineSmall,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color:
-                                          FlutterFlowTheme.of(context).accent2,
-                                      size: 20.0,
-                                    ),
-                                    tileColor: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    dense: false,
-                                  ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 20.0, 0.0, 0.0),
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    if (valueOrDefault(
+                                            currentUserDocument?.rol, '') ==
+                                        'admin')
+                                      AuthUserStreamWidget(
+                                        builder: (context) => InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed(
+                                                'Admin_EventsErrors');
+                                          },
+                                          child: ListTile(
+                                            leading: Icon(
+                                              Icons.receipt_long,
+                                            ),
+                                            title: Text(
+                                              'Reportes',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .headlineSmall,
+                                            ),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .accent2,
+                                              size: 20.0,
+                                            ),
+                                            tileColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            dense: false,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                        child: ListView(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            ListTile(
-                              leading: Icon(
-                                Icons.settings,
-                              ),
-                              title: Text(
-                                'Configuración',
-                                style:
-                                    FlutterFlowTheme.of(context).headlineSmall,
-                              ),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                color: FlutterFlowTheme.of(context).accent2,
-                                size: 20.0,
-                              ),
-                              tileColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              dense: false,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                        child: ListView(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                context.pushNamed('Info');
-                              },
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.info_outlined,
-                                ),
-                                title: Text(
-                                  'Acerca de la empresa',
-                                  style: FlutterFlowTheme.of(context)
-                                      .headlineSmall,
-                                ),
-                                trailing: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: FlutterFlowTheme.of(context).accent2,
-                                  size: 20.0,
-                                ),
-                                tileColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                dense: false,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 20.0, 0.0, 0.0),
-                              child: ListView(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                children: [
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      context.pushNamed('cambiarContrasenna');
-                                    },
-                                    child: ListTile(
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 20.0, 0.0, 0.0),
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    ListTile(
                                       leading: Icon(
-                                        Icons.password,
+                                        Icons.settings,
                                       ),
                                       title: Text(
-                                        'Cambiar contraseña',
+                                        'Configuración',
                                         style: FlutterFlowTheme.of(context)
                                             .headlineSmall,
                                       ),
@@ -390,24 +439,31 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                           .secondaryBackground,
                                       dense: false,
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 18.0, 0.0, 18.0),
-                                    child: InkWell(
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 20.0, 0.0, 0.0),
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    InkWell(
                                       splashColor: Colors.transparent,
                                       focusColor: Colors.transparent,
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        context.pushNamed('profileUsuarios');
+                                        context.pushNamed('CambioContrasenna');
                                       },
                                       child: ListTile(
                                         leading: Icon(
-                                          Icons.person,
+                                          Icons.password,
                                         ),
                                         title: Text(
-                                          'Perfil de usuario',
+                                          'Cambiar contraseña',
                                           style: FlutterFlowTheme.of(context)
                                               .headlineSmall,
                                         ),
@@ -422,157 +478,237 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                         dense: false,
                                       ),
                                     ),
-                                  ),
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      context.pushNamed('sendMessages');
-                                    },
-                                    child: ListTile(
-                                      leading: Icon(
-                                        Icons.message,
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 18.0, 0.0, 18.0),
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          context.pushNamed('profileUsuarios');
+                                        },
+                                        child: ListTile(
+                                          leading: Icon(
+                                            Icons.person,
+                                          ),
+                                          title: Text(
+                                            'Perfil de usuario',
+                                            style: FlutterFlowTheme.of(context)
+                                                .headlineSmall,
+                                          ),
+                                          trailing: Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: FlutterFlowTheme.of(context)
+                                                .accent2,
+                                            size: 20.0,
+                                          ),
+                                          tileColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryBackground,
+                                          dense: false,
+                                        ),
                                       ),
-                                      title: Text(
-                                        'Comentario',
-                                        style: FlutterFlowTheme.of(context)
-                                            .headlineSmall,
-                                      ),
-                                      trailing: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: FlutterFlowTheme.of(context)
-                                            .accent2,
-                                        size: 20.0,
-                                      ),
-                                      tileColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      dense: false,
                                     ),
-                                  ),
-                                ],
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        context.pushNamed('sendMessages');
+                                      },
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.message,
+                                        ),
+                                        title: Text(
+                                          'Comentario',
+                                          style: FlutterFlowTheme.of(context)
+                                              .headlineSmall,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: FlutterFlowTheme.of(context)
+                                              .accent2,
+                                          size: 20.0,
+                                        ),
+                                        tileColor: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                        dense: false,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (valueOrDefault(currentUserDocument?.rol, '') ==
-                          'CLIENTE')
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 20.0, 0.0, 0.0),
-                          child: AuthUserStreamWidget(
-                            builder: (context) => ListView(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              children: [
-                                ListTile(
-                                  leading: Icon(
-                                    Icons.house_sharp,
-                                  ),
-                                  title: Text(
-                                    'Mis propiedades',
-                                    style: FlutterFlowTheme.of(context)
-                                        .headlineSmall,
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: FlutterFlowTheme.of(context).accent2,
-                                    size: 20.0,
-                                  ),
-                                  tileColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  dense: false,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      if (valueOrDefault(currentUserDocument?.rol, '') ==
-                          'admin')
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 20.0, 0.0, 0.0),
-                          child: AuthUserStreamWidget(
-                            builder: (context) => ListView(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              children: [
-                                InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context.pushNamed('TodasPropiedades');
-                                  },
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.house_sharp,
+                              if (valueOrDefault(
+                                      currentUserDocument?.rol, '') ==
+                                  'cliente')
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 20.0, 0.0, 0.0),
+                                  child: AuthUserStreamWidget(
+                                    builder: (context) => ListView(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      children: [
+                                        ListTile(
+                                          leading: Icon(
+                                            Icons.house_sharp,
+                                          ),
+                                          title: Text(
+                                            'Mis propiedades',
+                                            style: FlutterFlowTheme.of(context)
+                                                .headlineSmall,
+                                          ),
+                                          trailing: Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: FlutterFlowTheme.of(context)
+                                                .accent2,
+                                            size: 20.0,
+                                          ),
+                                          tileColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryBackground,
+                                          dense: false,
+                                        ),
+                                      ],
                                     ),
-                                    title: Text(
-                                      'Propiedades',
-                                      style: FlutterFlowTheme.of(context)
-                                          .headlineSmall,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color:
-                                          FlutterFlowTheme.of(context).accent2,
-                                      size: 20.0,
-                                    ),
-                                    tileColor: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    dense: false,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 20.0, 0.0, 40.0),
-                        child: ListView(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                GoRouter.of(context).prepareAuthEvent();
-                                await authManager.signOut();
-                                GoRouter.of(context).clearRedirectLocation();
+                              if (valueOrDefault(
+                                      currentUserDocument?.rol, '') ==
+                                  'admin')
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 20.0, 0.0, 0.0),
+                                  child: AuthUserStreamWidget(
+                                    builder: (context) => ListView(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      children: [
+                                        InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context
+                                                .pushNamed('TodasPropiedades');
+                                          },
+                                          child: ListTile(
+                                            leading: Icon(
+                                              Icons.house_sharp,
+                                            ),
+                                            title: Text(
+                                              'Propiedades',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .headlineSmall,
+                                            ),
+                                            trailing: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .accent2,
+                                              size: 20.0,
+                                            ),
+                                            tileColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            dense: false,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 20.0, 0.0, 0.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              context.pushNamed('Info');
+                                            },
+                                            child: ListTile(
+                                              leading: Icon(
+                                                Icons.info_outlined,
+                                              ),
+                                              title: Text(
+                                                'Acerca de la empresa',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .headlineSmall,
+                                              ),
+                                              trailing: Icon(
+                                                Icons.arrow_forward_ios,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .accent2,
+                                                size: 20.0,
+                                              ),
+                                              tileColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              dense: false,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 20.0, 0.0, 40.0),
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        GoRouter.of(context).prepareAuthEvent();
+                                        await authManager.signOut();
+                                        GoRouter.of(context)
+                                            .clearRedirectLocation();
 
-                                context.goNamedAuth('Welcome', context.mounted);
-                              },
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.logout,
+                                        context.goNamedAuth(
+                                            'Welcome', context.mounted);
+                                      },
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.logout,
+                                        ),
+                                        title: Text(
+                                          'Cerrar sesión',
+                                          style: FlutterFlowTheme.of(context)
+                                              .headlineSmall,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: FlutterFlowTheme.of(context)
+                                              .accent2,
+                                          size: 20.0,
+                                        ),
+                                        tileColor: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                        dense: false,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                title: Text(
-                                  'Cerrar sesión',
-                                  style: FlutterFlowTheme.of(context)
-                                      .headlineSmall,
-                                ),
-                                trailing: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: FlutterFlowTheme.of(context).accent2,
-                                  size: 20.0,
-                                ),
-                                tileColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                dense: false,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

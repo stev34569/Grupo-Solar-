@@ -3,6 +3,7 @@ import '/components/opciones_propiedad/opciones_propiedad_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_video_player.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
@@ -71,7 +72,9 @@ class _PropiedadWidgetState extends State<PropiedadWidget> {
         }
         final propiedadPropiedadRecord = snapshot.data!;
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -100,7 +103,7 @@ class _PropiedadWidgetState extends State<PropiedadWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.91, -0.9),
+                            alignment: AlignmentDirectional(-0.91, -0.90),
                             child: InkWell(
                               splashColor: Colors.transparent,
                               focusColor: Colors.transparent,
@@ -145,8 +148,11 @@ class _PropiedadWidgetState extends State<PropiedadWidget> {
                                   context: context,
                                   builder: (context) {
                                     return GestureDetector(
-                                      onTap: () => FocusScope.of(context)
-                                          .requestFocus(_model.unfocusNode),
+                                      onTap: () => _model
+                                              .unfocusNode.canRequestFocus
+                                          ? FocusScope.of(context)
+                                              .requestFocus(_model.unfocusNode)
+                                          : FocusScope.of(context).unfocus(),
                                       child: Padding(
                                         padding:
                                             MediaQuery.viewInsetsOf(context),
@@ -154,7 +160,7 @@ class _PropiedadWidgetState extends State<PropiedadWidget> {
                                       ),
                                     );
                                   },
-                                ).then((value) => setState(() {}));
+                                ).then((value) => safeSetState(() {}));
                               },
                               child: Icon(
                                 Icons.pending,
@@ -237,6 +243,8 @@ class _PropiedadWidgetState extends State<PropiedadWidget> {
                                 glowColor: FlutterFlowTheme.of(context).primary,
                               ),
                               RichText(
+                                textScaleFactor:
+                                    MediaQuery.of(context).textScaleFactor,
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
@@ -512,7 +520,10 @@ class _PropiedadWidgetState extends State<PropiedadWidget> {
                               propiedadPropiedadRecord.video != '')
                             Expanded(
                               child: FlutterFlowVideoPlayer(
-                                path: propiedadPropiedadRecord.video,
+                                path: valueOrDefault<String>(
+                                  propiedadPropiedadRecord.video,
+                                  'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/grupo-solar-proyecto-fa8840/assets/cr6fu72ch4vp/Video_Domotica_Bosque_Real_IV_30_Segundos.mp4',
+                                ),
                                 videoType: VideoType.network,
                                 autoPlay: false,
                                 looping: true,

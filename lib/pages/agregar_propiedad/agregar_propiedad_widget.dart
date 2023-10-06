@@ -55,7 +55,9 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -334,74 +336,88 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
+                              Opacity(
+                                opacity: 0.8,
+                                child: Text(
+                                  '₡',
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                ),
+                              ),
                               Expanded(
-                                child: TextFormField(
-                                  controller: _model.txtAgregarPrecioController,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    hintText: 'Precio',
-                                    hintStyle: FlutterFlowTheme.of(context)
-                                        .bodySmall
-                                        .override(
-                                          fontFamily: 'Lato',
-                                          fontSize: 14.0,
+                                child: Align(
+                                  alignment: AlignmentDirectional(-1.00, 0.00),
+                                  child: TextFormField(
+                                    controller:
+                                        _model.txtAgregarPrecioController,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      labelStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Lato',
+                                            fontSize: 14.0,
+                                          ),
+                                      hintText: 'Precio',
+                                      hintStyle: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .override(
+                                            fontFamily: 'Lato',
+                                            fontSize: 14.0,
+                                          ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondary,
+                                          width: 1.0,
                                         ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondary,
-                                        width: 1.0,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
                                       ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0x00000000),
+                                          width: 1.0,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
                                       ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 1.0,
+                                      errorBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0x00000000),
+                                          width: 1.0,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
                                       ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
-                                      ),
-                                    ),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
-                                      ),
-                                    ),
-                                    focusedErrorBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
+                                      focusedErrorBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0x00000000),
+                                          width: 1.0,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
                                       ),
                                     ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodySmall,
+                                    keyboardType: TextInputType.number,
+                                    validator: _model
+                                        .txtAgregarPrecioControllerValidator
+                                        .asValidator(context),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp('[0-9]'))
+                                    ],
                                   ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Lato',
-                                        fontSize: 14.0,
-                                      ),
-                                  keyboardType: TextInputType.number,
-                                  validator: _model
-                                      .txtAgregarPrecioControllerValidator
-                                      .asValidator(context),
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[0-9]'))
-                                  ],
                                 ),
                               ),
                             ],
@@ -521,63 +537,44 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              StreamBuilder<List<ProvinciaRecord>>(
-                                stream: queryProvinciaRecord(
-                                  queryBuilder: (provinciaRecord) =>
-                                      provinciaRecord.orderBy('idPro'),
-                                ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: SpinKitChasingDots(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          size: 50.0,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  List<ProvinciaRecord>
-                                      dropDownProvinciasProvinciaRecordList =
-                                      snapshot.data!;
-                                  return FlutterFlowDropDown<String>(
-                                    controller: _model
-                                            .dropDownProvinciasValueController ??=
+                              FlutterFlowDropDown<String>(
+                                controller:
+                                    _model.ddProvinciasValueController ??=
                                         FormFieldController<String>(null),
-                                    options:
-                                        dropDownProvinciasProvinciaRecordList
-                                            .map((e) => e.nombre)
-                                            .toList(),
-                                    onChanged: (val) => setState(() =>
-                                        _model.dropDownProvinciasValue = val),
-                                    width: 300.0,
-                                    height: 50.0,
-                                    textStyle:
-                                        FlutterFlowTheme.of(context).bodyMedium,
-                                    hintText: 'Provincia',
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      size: 24.0,
-                                    ),
-                                    fillColor: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    elevation: 2.0,
-                                    borderColor:
-                                        FlutterFlowTheme.of(context).primary,
-                                    borderWidth: 2.0,
-                                    borderRadius: 8.0,
-                                    margin: EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 4.0, 16.0, 4.0),
-                                    hidesUnderline: true,
-                                    isSearchable: false,
-                                  );
-                                },
+                                options: [
+                                  'San Jose',
+                                  'Alajuela',
+                                  'Cartago',
+                                  'Heredia',
+                                  'Guanacaste',
+                                  'Puntarenas',
+                                  'Limon'
+                                ],
+                                onChanged: (val) => setState(
+                                    () => _model.ddProvinciasValue = val),
+                                width: 300.0,
+                                height: 50.0,
+                                textStyle:
+                                    FlutterFlowTheme.of(context).bodyMedium,
+                                hintText: 'Provincia',
+                                icon: Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  size: 24.0,
+                                ),
+                                fillColor: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                elevation: 2.0,
+                                borderColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                borderWidth: 2.0,
+                                borderRadius: 8.0,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 4.0, 16.0, 4.0),
+                                hidesUnderline: true,
+                                isSearchable: false,
+                                isMultiSelect: false,
                               ),
                             ],
                           ),
@@ -588,12 +585,15 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              StreamBuilder<List<CantonRecord>>(
-                                stream: queryCantonRecord(
-                                  queryBuilder: (cantonRecord) =>
-                                      cantonRecord.where('provinciaRef',
-                                          isEqualTo:
-                                              _model.dropDownProvinciasValue),
+                              StreamBuilder<List<UbicacionCantonRecord>>(
+                                stream: queryUbicacionCantonRecord(
+                                  queryBuilder: (ubicacionCantonRecord) =>
+                                      ubicacionCantonRecord
+                                          .where(
+                                            'provincia',
+                                            isEqualTo: _model.ddProvinciasValue,
+                                          )
+                                          .orderBy('id'),
                                 ),
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
@@ -610,17 +610,18 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                       ),
                                     );
                                   }
-                                  List<CantonRecord> dropDownCantonRecordList =
+                                  List<UbicacionCantonRecord>
+                                      ddCantonUbicacionCantonRecordList =
                                       snapshot.data!;
                                   return FlutterFlowDropDown<String>(
                                     controller:
-                                        _model.dropDownValueController ??=
+                                        _model.ddCantonValueController ??=
                                             FormFieldController<String>(null),
-                                    options: dropDownCantonRecordList
-                                        .map((e) => e.nombre)
+                                    options: ddCantonUbicacionCantonRecordList
+                                        .map((e) => e.canton)
                                         .toList(),
                                     onChanged: (val) => setState(
-                                        () => _model.dropDownValue = val),
+                                        () => _model.ddCantonValue = val),
                                     width: 300.0,
                                     height: 50.0,
                                     textStyle:
@@ -643,6 +644,80 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                         16.0, 4.0, 16.0, 4.0),
                                     hidesUnderline: true,
                                     isSearchable: false,
+                                    isMultiSelect: false,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              20.0, 10.0, 20.0, 10.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              StreamBuilder<List<UbicacionDistritoRecord>>(
+                                stream: queryUbicacionDistritoRecord(
+                                  queryBuilder: (ubicacionDistritoRecord) =>
+                                      ubicacionDistritoRecord
+                                          .where(
+                                            'canton',
+                                            isEqualTo: _model.ddCantonValue,
+                                          )
+                                          .orderBy('id'),
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: SpinKitChasingDots(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primary,
+                                          size: 50.0,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  List<UbicacionDistritoRecord>
+                                      ddDistritoUbicacionDistritoRecordList =
+                                      snapshot.data!;
+                                  return FlutterFlowDropDown<String>(
+                                    controller:
+                                        _model.ddDistritoValueController ??=
+                                            FormFieldController<String>(null),
+                                    options:
+                                        ddDistritoUbicacionDistritoRecordList
+                                            .map((e) => e.distrito)
+                                            .toList(),
+                                    onChanged: (val) => setState(
+                                        () => _model.ddDistritoValue = val),
+                                    width: 300.0,
+                                    height: 50.0,
+                                    textStyle:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                    hintText: 'Distrito',
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      size: 24.0,
+                                    ),
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    elevation: 2.0,
+                                    borderColor:
+                                        FlutterFlowTheme.of(context).primary,
+                                    borderWidth: 2.0,
+                                    borderRadius: 8.0,
+                                    margin: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 4.0, 16.0, 4.0),
+                                    hidesUnderline: true,
+                                    isSearchable: false,
+                                    isMultiSelect: false,
                                   );
                                 },
                               ),
@@ -795,6 +870,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                     12.0, 4.0, 12.0, 4.0),
                                 hidesUnderline: true,
                                 isSearchable: false,
+                                isMultiSelect: false,
                               ),
                             ],
                           ),
@@ -842,6 +918,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                     12.0, 4.0, 12.0, 4.0),
                                 hidesUnderline: true,
                                 isSearchable: false,
+                                isMultiSelect: false,
                               ),
                             ],
                           ),
@@ -1066,8 +1143,8 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                         null &&
                                     _model.txtAgregarMetrosController.text !=
                                         '') &&
-                                (_model.dropDownProvinciasValue != null &&
-                                    _model.dropDownProvinciasValue != '') &&
+                                (_model.ddProvinciasValue != null &&
+                                    _model.ddProvinciasValue != '') &&
                                 (_model.txtAgregarDireccionController.text !=
                                         null &&
                                     _model.txtAgregarDireccionController.text !=
@@ -1091,13 +1168,18 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                   video: _model.uploadedFileUrl2,
                                   description: _model
                                       .txtAgregarDescripcionController.text,
-                                  provincia: _model.dropDownProvinciasValue,
+                                  provincia: _model.ddProvinciasValue,
                                   ownerId: currentUserReference,
                                   revision: true,
-                                  canton: _model.dropDownValue,
+                                  canton: _model.ddCantonValue,
+                                  distrito: _model.ddDistritoValue,
                                 ),
-                                'filtrado': _model.checkboxGroupValues,
-                                'created_at': FieldValue.serverTimestamp(),
+                                ...mapToFirestore(
+                                  {
+                                    'filtrado': _model.checkboxGroupValues,
+                                    'created_at': FieldValue.serverTimestamp(),
+                                  },
+                                ),
                               });
                               await showModalBottomSheet(
                                 isScrollControlled: true,
@@ -1106,15 +1188,23 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                 context: context,
                                 builder: (context) {
                                   return GestureDetector(
-                                    onTap: () => FocusScope.of(context)
-                                        .requestFocus(_model.unfocusNode),
+                                    onTap: () => _model
+                                            .unfocusNode.canRequestFocus
+                                        ? FocusScope.of(context)
+                                            .requestFocus(_model.unfocusNode)
+                                        : FocusScope.of(context).unfocus(),
                                     child: Padding(
                                       padding: MediaQuery.viewInsetsOf(context),
-                                      child: AgregadoExitoWidget(),
+                                      child: Container(
+                                        height:
+                                            MediaQuery.sizeOf(context).height *
+                                                0.5,
+                                        child: AgregadoExitoWidget(),
+                                      ),
                                     ),
                                   );
                                 },
-                              ).then((value) => setState(() {}));
+                              ).then((value) => safeSetState(() {}));
                             } else {
                               await showDialog(
                                 context: context,
