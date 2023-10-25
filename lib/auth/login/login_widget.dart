@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,9 @@ class _LoginWidgetState extends State<LoginWidget> {
     _model = createModel(context, () => LoginModel());
 
     _model.txtEmailController ??= TextEditingController();
+    _model.txtEmailFocusNode ??= FocusNode();
     _model.tctPasswordController ??= TextEditingController();
+    _model.tctPasswordFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -40,6 +43,15 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -115,6 +127,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             20.0, 10.0, 20.0, 20.0),
                         child: TextFormField(
                           controller: _model.txtEmailController,
+                          focusNode: _model.txtEmailFocusNode,
                           obscureText: false,
                           decoration: InputDecoration(
                             hintStyle:
@@ -157,6 +170,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     fontWeight: FontWeight.normal,
                                   ),
                           textAlign: TextAlign.start,
+                          maxLength: 45,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: _model.txtEmailControllerValidator
                               .asValidator(context),
                         ),
@@ -190,6 +205,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             20.0, 10.0, 20.0, 20.0),
                         child: TextFormField(
                           controller: _model.tctPasswordController,
+                          focusNode: _model.tctPasswordFocusNode,
                           obscureText: !_model.tctPasswordVisibility,
                           decoration: InputDecoration(
                             hintStyle: FlutterFlowTheme.of(context).bodySmall,
@@ -238,6 +254,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                           style: FlutterFlowTheme.of(context).bodyMedium,
                           textAlign: TextAlign.start,
+                          maxLength: 30,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: _model.tctPasswordControllerValidator
                               .asValidator(context),
                         ),
@@ -290,17 +308,36 @@ class _LoginWidgetState extends State<LoginWidget> {
                             return;
                           }
 
+                          if (_model.formKey.currentState == null ||
+                              !_model.formKey.currentState!.validate()) {
+                            return;
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Inicio de sesión',
+                                style: TextStyle(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
+                              ),
+                              duration: Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).secondary,
+                            ),
+                          );
+
                           context.goNamedAuth('Home', context.mounted);
                         },
                         text: 'INICIAR SESIÓN',
                         options: FFButtonOptions(
-                          width: 180.0,
+                          width: 300.0,
                           height: 50.0,
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
                           iconPadding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          color: FlutterFlowTheme.of(context).primary,
+                          color: Color(0xFFFF6900),
                           textStyle:
                               FlutterFlowTheme.of(context).titleSmall.override(
                                     fontFamily: 'Lato',
@@ -333,13 +370,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                         },
                         text: 'Ingresar como invitado',
                         options: FFButtonOptions(
-                          width: 251.0,
-                          height: 61.0,
+                          width: 300.0,
+                          height: 50.0,
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
                           iconPadding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          color: Color(0xFF3D3C3C),
+                          color: Color(0xFFFF6900),
                           textStyle: FlutterFlowTheme.of(context)
                               .labelLarge
                               .override(

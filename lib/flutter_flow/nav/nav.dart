@@ -7,7 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '/backend/backend.dart';
 
-import '../../auth/base_auth_user_provider.dart';
+import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
 import '/main.dart';
@@ -224,6 +224,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'Prueba',
           path: '/prueba',
           builder: (context, params) => PruebaWidget(),
+        ),
+        FFRoute(
+          name: 'list',
+          path: '/list',
+          builder: (context, params) => ListWidget(),
+        ),
+        FFRoute(
+          name: 'Create3SupportTicketBugReport',
+          path: '/create3SupportTicketBugReport',
+          builder: (context, params) => Create3SupportTicketBugReportWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

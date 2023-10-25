@@ -28,16 +28,20 @@ class AgregarPropiedadModel extends FlutterFlowModel<AgregarPropiedadWidget> {
   String uploadedFileUrl1 = '';
 
   // State field(s) for txtAgregarTitulo widget.
+  FocusNode? txtAgregarTituloFocusNode;
   TextEditingController? txtAgregarTituloController;
   String? Function(BuildContext, String?)? txtAgregarTituloControllerValidator;
   // State field(s) for txtAgregarDescripcion widget.
+  FocusNode? txtAgregarDescripcionFocusNode;
   TextEditingController? txtAgregarDescripcionController;
   String? Function(BuildContext, String?)?
       txtAgregarDescripcionControllerValidator;
   // State field(s) for txtAgregarPrecio widget.
+  FocusNode? txtAgregarPrecioFocusNode;
   TextEditingController? txtAgregarPrecioController;
   String? Function(BuildContext, String?)? txtAgregarPrecioControllerValidator;
   // State field(s) for txtAgregarMetros widget.
+  FocusNode? txtAgregarMetrosFocusNode;
   TextEditingController? txtAgregarMetrosController;
   String? Function(BuildContext, String?)? txtAgregarMetrosControllerValidator;
   // State field(s) for DdProvincias widget.
@@ -50,6 +54,7 @@ class AgregarPropiedadModel extends FlutterFlowModel<AgregarPropiedadWidget> {
   String? ddDistritoValue;
   FormFieldController<String>? ddDistritoValueController;
   // State field(s) for txtAgregarDireccion widget.
+  FocusNode? txtAgregarDireccionFocusNode;
   TextEditingController? txtAgregarDireccionController;
   String? Function(BuildContext, String?)?
       txtAgregarDireccionControllerValidator;
@@ -73,10 +78,19 @@ class AgregarPropiedadModel extends FlutterFlowModel<AgregarPropiedadWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    txtAgregarTituloFocusNode?.dispose();
     txtAgregarTituloController?.dispose();
+
+    txtAgregarDescripcionFocusNode?.dispose();
     txtAgregarDescripcionController?.dispose();
+
+    txtAgregarPrecioFocusNode?.dispose();
     txtAgregarPrecioController?.dispose();
+
+    txtAgregarMetrosFocusNode?.dispose();
     txtAgregarMetrosController?.dispose();
+
+    txtAgregarDireccionFocusNode?.dispose();
     txtAgregarDireccionController?.dispose();
   }
 

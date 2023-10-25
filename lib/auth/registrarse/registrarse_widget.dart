@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -28,10 +29,15 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
     _model = createModel(context, () => RegistrarseModel());
 
     _model.txtRegistroNombreController ??= TextEditingController();
+    _model.txtRegistroNombreFocusNode ??= FocusNode();
     _model.txtRegistroApellidoController ??= TextEditingController();
+    _model.txtRegistroApellidoFocusNode ??= FocusNode();
     _model.txtRegistroEmailController ??= TextEditingController();
+    _model.txtRegistroEmailFocusNode ??= FocusNode();
     _model.txtRegistroPasswordController ??= TextEditingController();
+    _model.txtRegistroPasswordFocusNode ??= FocusNode();
     _model.txtRegistroConfirmarPasswordController ??= TextEditingController();
+    _model.txtRegistroConfirmarPasswordFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -44,6 +50,15 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -130,6 +145,7 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                             20.0, 10.0, 20.0, 20.0),
                         child: TextFormField(
                           controller: _model.txtRegistroNombreController,
+                          focusNode: _model.txtRegistroNombreFocusNode,
                           obscureText: false,
                           decoration: InputDecoration(
                             hintStyle:
@@ -172,6 +188,8 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                                     fontWeight: FontWeight.normal,
                                   ),
                           textAlign: TextAlign.start,
+                          maxLength: 30,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: _model.txtRegistroNombreControllerValidator
                               .asValidator(context),
                         ),
@@ -205,6 +223,7 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                             20.0, 10.0, 20.0, 20.0),
                         child: TextFormField(
                           controller: _model.txtRegistroApellidoController,
+                          focusNode: _model.txtRegistroApellidoFocusNode,
                           obscureText: false,
                           decoration: InputDecoration(
                             hintStyle: FlutterFlowTheme.of(context).bodySmall,
@@ -239,6 +258,8 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                           ),
                           style: FlutterFlowTheme.of(context).bodyMedium,
                           textAlign: TextAlign.start,
+                          maxLength: 30,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: _model
                               .txtRegistroApellidoControllerValidator
                               .asValidator(context),
@@ -272,6 +293,7 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                             20.0, 10.0, 20.0, 20.0),
                         child: TextFormField(
                           controller: _model.txtRegistroEmailController,
+                          focusNode: _model.txtRegistroEmailFocusNode,
                           obscureText: false,
                           decoration: InputDecoration(
                             hintStyle:
@@ -314,6 +336,8 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                                     fontWeight: FontWeight.normal,
                                   ),
                           textAlign: TextAlign.start,
+                          maxLength: 30,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: _model.txtRegistroEmailControllerValidator
                               .asValidator(context),
                         ),
@@ -346,6 +370,7 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                             20.0, 10.0, 20.0, 20.0),
                         child: TextFormField(
                           controller: _model.txtRegistroPasswordController,
+                          focusNode: _model.txtRegistroPasswordFocusNode,
                           obscureText: !_model.txtRegistroPasswordVisibility,
                           decoration: InputDecoration(
                             hintStyle:
@@ -402,6 +427,8 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                                     fontWeight: FontWeight.normal,
                                   ),
                           textAlign: TextAlign.start,
+                          maxLength: 30,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: _model
                               .txtRegistroPasswordControllerValidator
                               .asValidator(context),
@@ -436,6 +463,8 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                         child: TextFormField(
                           controller:
                               _model.txtRegistroConfirmarPasswordController,
+                          focusNode:
+                              _model.txtRegistroConfirmarPasswordFocusNode,
                           obscureText:
                               !_model.txtRegistroConfirmarPasswordVisibility,
                           decoration: InputDecoration(
@@ -495,6 +524,8 @@ class _RegistrarseWidgetState extends State<RegistrarseWidget> {
                                     fontWeight: FontWeight.normal,
                                   ),
                           textAlign: TextAlign.start,
+                          maxLength: 30,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           validator: _model
                               .txtRegistroConfirmarPasswordControllerValidator
                               .asValidator(context),

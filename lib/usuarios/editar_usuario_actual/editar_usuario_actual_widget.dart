@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -40,11 +41,15 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
 
     _model.txtNombreController ??=
         TextEditingController(text: currentUserDisplayName);
+    _model.txtNombreFocusNode ??= FocusNode();
     _model.txtApellidoController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.apellido, ''));
+    _model.txtApellidoFocusNode ??= FocusNode();
     _model.txtTelefonoController ??=
         TextEditingController(text: currentPhoneNumber);
+    _model.txtTelefonoFocusNode ??= FocusNode();
     _model.txtEmailController ??= TextEditingController(text: currentUserEmail);
+    _model.txtEmailFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -135,6 +140,7 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                         child: AuthUserStreamWidget(
                           builder: (context) => TextFormField(
                             controller: _model.txtNombreController,
+                            focusNode: _model.txtNombreFocusNode,
                             autofocus: true,
                             obscureText: false,
                             decoration: InputDecoration(
@@ -173,6 +179,8 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                               ),
                             ),
                             style: FlutterFlowTheme.of(context).bodyMedium,
+                            maxLength: 30,
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             cursorColor: FlutterFlowTheme.of(context).primary,
                             validator: _model.txtNombreControllerValidator
                                 .asValidator(context),
@@ -194,6 +202,7 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                         child: AuthUserStreamWidget(
                           builder: (context) => TextFormField(
                             controller: _model.txtApellidoController,
+                            focusNode: _model.txtApellidoFocusNode,
                             autofocus: true,
                             obscureText: false,
                             decoration: InputDecoration(
@@ -232,6 +241,8 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                               ),
                             ),
                             style: FlutterFlowTheme.of(context).bodyMedium,
+                            maxLength: 30,
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             validator: _model.txtApellidoControllerValidator
                                 .asValidator(context),
                           ),
@@ -252,6 +263,7 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                         child: AuthUserStreamWidget(
                           builder: (context) => TextFormField(
                             controller: _model.txtTelefonoController,
+                            focusNode: _model.txtTelefonoFocusNode,
                             autofocus: true,
                             obscureText: false,
                             decoration: InputDecoration(
@@ -290,6 +302,8 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                               ),
                             ),
                             style: FlutterFlowTheme.of(context).bodyMedium,
+                            maxLength: 14,
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             keyboardType: TextInputType.phone,
                             validator: _model.txtTelefonoControllerValidator
                                 .asValidator(context),
@@ -310,6 +324,7 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                             EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
                         child: TextFormField(
                           controller: _model.txtEmailController,
+                          focusNode: _model.txtEmailFocusNode,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -347,6 +362,8 @@ class _EditarUsuarioActualWidgetState extends State<EditarUsuarioActualWidget> {
                             ),
                           ),
                           style: FlutterFlowTheme.of(context).bodyMedium,
+                          maxLength: 30,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           keyboardType: TextInputType.emailAddress,
                           validator: _model.txtEmailControllerValidator
                               .asValidator(context),

@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,7 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget> {
     _model = createModel(context, () => RecoverPasswordModel());
 
     _model.txtRecuperarPasswordController ??= TextEditingController();
+    _model.txtRecuperarPasswordFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -39,6 +41,15 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -123,6 +134,7 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget> {
                           20.0, 10.0, 20.0, 20.0),
                       child: TextFormField(
                         controller: _model.txtRecuperarPasswordController,
+                        focusNode: _model.txtRecuperarPasswordFocusNode,
                         obscureText: false,
                         decoration: InputDecoration(
                           hintText: 'email@email.com',
@@ -165,6 +177,8 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget> {
                               fontWeight: FontWeight.normal,
                             ),
                         textAlign: TextAlign.start,
+                        maxLength: 30,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         validator: _model
                             .txtRecuperarPasswordControllerValidator
                             .asValidator(context),

@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,9 @@ class _AgregarEventosErroresWidgetState
     _model = createModel(context, () => AgregarEventosErroresModel());
 
     _model.txtEmailController ??= TextEditingController();
+    _model.txtEmailFocusNode ??= FocusNode();
     _model.tctPasswordController ??= TextEditingController();
+    _model.tctPasswordFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -42,6 +45,15 @@ class _AgregarEventosErroresWidgetState
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -103,6 +115,7 @@ class _AgregarEventosErroresWidgetState
                           20.0, 10.0, 20.0, 20.0),
                       child: TextFormField(
                         controller: _model.txtEmailController,
+                        focusNode: _model.txtEmailFocusNode,
                         obscureText: false,
                         decoration: InputDecoration(
                           hintStyle:
@@ -177,6 +190,7 @@ class _AgregarEventosErroresWidgetState
                           20.0, 10.0, 20.0, 20.0),
                       child: TextFormField(
                         controller: _model.tctPasswordController,
+                        focusNode: _model.tctPasswordFocusNode,
                         obscureText: false,
                         decoration: InputDecoration(
                           hintStyle: FlutterFlowTheme.of(context).bodySmall,

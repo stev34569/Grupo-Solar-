@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'login_widget.dart' show LoginWidget;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class LoginModel extends FlutterFlowModel<LoginWidget> {
   final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
   // State field(s) for txtEmail widget.
+  FocusNode? txtEmailFocusNode;
   TextEditingController? txtEmailController;
   String? Function(BuildContext, String?)? txtEmailControllerValidator;
   String? _txtEmailControllerValidator(BuildContext context, String? val) {
@@ -32,6 +34,7 @@ class LoginModel extends FlutterFlowModel<LoginWidget> {
   }
 
   // State field(s) for tctPassword widget.
+  FocusNode? tctPasswordFocusNode;
   TextEditingController? tctPasswordController;
   late bool tctPasswordVisibility;
   String? Function(BuildContext, String?)? tctPasswordControllerValidator;
@@ -40,8 +43,8 @@ class LoginModel extends FlutterFlowModel<LoginWidget> {
       return 'ingrese su contraseña';
     }
 
-    if (val.length < 1) {
-      return 'ingrese su contraseña';
+    if (val.length < 4) {
+      return 'Ingrese su contraseña';
     }
     if (val.length > 20) {
       return 'Máximo de caracteres';
@@ -60,7 +63,10 @@ class LoginModel extends FlutterFlowModel<LoginWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    txtEmailFocusNode?.dispose();
     txtEmailController?.dispose();
+
+    tctPasswordFocusNode?.dispose();
     tctPasswordController?.dispose();
   }
 

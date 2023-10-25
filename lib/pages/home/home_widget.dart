@@ -9,6 +9,7 @@ import '/flutter_flow/form_field_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     _model = createModel(context, () => HomeModel());
 
     _model.txtbuscarController ??= TextEditingController();
+    _model.txtbuscarFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -46,6 +48,15 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return StreamBuilder<List<PropiedadRecord>>(
@@ -142,6 +153,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                     child: TextFormField(
                                                       controller: _model
                                                           .txtbuscarController,
+                                                      focusNode: _model
+                                                          .txtbuscarFocusNode,
                                                       onChanged: (_) =>
                                                           EasyDebounce.debounce(
                                                         '_model.txtbuscarController',
@@ -900,6 +913,66 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                               propiedadesItem.price.toString(),
                                                                               style: FlutterFlowTheme.of(context).bodyMedium,
                                                                             ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.end,
+                                                                          children: [
+                                                                            if (propiedadesItem.favoritos.contains(currentUserReference))
+                                                                              Align(
+                                                                                alignment: AlignmentDirectional(1.00, 0.00),
+                                                                                child: InkWell(
+                                                                                  splashColor: Colors.transparent,
+                                                                                  focusColor: Colors.transparent,
+                                                                                  hoverColor: Colors.transparent,
+                                                                                  highlightColor: Colors.transparent,
+                                                                                  onTap: () async {
+                                                                                    await propiedadesItem.reference.update({
+                                                                                      ...mapToFirestore(
+                                                                                        {
+                                                                                          'favoritos': FieldValue.arrayRemove([
+                                                                                            currentUserReference
+                                                                                          ]),
+                                                                                        },
+                                                                                      ),
+                                                                                    });
+                                                                                  },
+                                                                                  child: Icon(
+                                                                                    Icons.delete_sharp,
+                                                                                    color: FlutterFlowTheme.of(context).primary,
+                                                                                    size: 24.0,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            if (!propiedadesItem.favoritos.contains(currentUserReference))
+                                                                              InkWell(
+                                                                                splashColor: Colors.transparent,
+                                                                                focusColor: Colors.transparent,
+                                                                                hoverColor: Colors.transparent,
+                                                                                highlightColor: Colors.transparent,
+                                                                                onTap: () async {
+                                                                                  await propiedadesItem.reference.update({
+                                                                                    ...mapToFirestore(
+                                                                                      {
+                                                                                        'favoritos': FieldValue.arrayUnion([
+                                                                                          currentUserReference
+                                                                                        ]),
+                                                                                      },
+                                                                                    ),
+                                                                                  });
+                                                                                },
+                                                                                child: Icon(
+                                                                                  Icons.favorite_border,
+                                                                                  color: FlutterFlowTheme.of(context).primary,
+                                                                                  size: 24.0,
+                                                                                ),
+                                                                              ),
                                                                           ],
                                                                         ),
                                                                       ),

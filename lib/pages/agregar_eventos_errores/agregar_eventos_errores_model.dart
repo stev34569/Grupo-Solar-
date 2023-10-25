@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'agregar_eventos_errores_widget.dart' show AgregarEventosErroresWidget;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -14,9 +15,11 @@ class AgregarEventosErroresModel
 
   final unfocusNode = FocusNode();
   // State field(s) for txtEmail widget.
+  FocusNode? txtEmailFocusNode;
   TextEditingController? txtEmailController;
   String? Function(BuildContext, String?)? txtEmailControllerValidator;
   // State field(s) for tctPassword widget.
+  FocusNode? tctPasswordFocusNode;
   TextEditingController? tctPasswordController;
   String? Function(BuildContext, String?)? tctPasswordControllerValidator;
 
@@ -26,7 +29,10 @@ class AgregarEventosErroresModel
 
   void dispose() {
     unfocusNode.dispose();
+    txtEmailFocusNode?.dispose();
     txtEmailController?.dispose();
+
+    tctPasswordFocusNode?.dispose();
     tctPasswordController?.dispose();
   }
 

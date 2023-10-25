@@ -6,6 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -230,6 +231,15 @@ class _PruebaWidgetState extends State<PruebaWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -576,9 +586,9 @@ class _PruebaWidgetState extends State<PruebaWidget>
                           onPressed: () {
                             print('Button pressed ...');
                           },
-                          text: 'CONTADURÍA',
+                          text: 'INGENERIA EN SISTEMAS DE COMPUTACION ',
                           options: FFButtonOptions(
-                            width: double.infinity,
+                            width: 624.0,
                             height: 56.0,
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
@@ -590,7 +600,7 @@ class _PruebaWidgetState extends State<PruebaWidget>
                                 .override(
                                   fontFamily: 'Lato',
                                   color: Color(0xFF0A1898),
-                                  fontSize: 20.0,
+                                  fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
                                 ),
                             elevation: 4.0,

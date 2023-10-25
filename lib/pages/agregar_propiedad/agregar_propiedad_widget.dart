@@ -36,10 +36,15 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
     _model = createModel(context, () => AgregarPropiedadModel());
 
     _model.txtAgregarTituloController ??= TextEditingController();
+    _model.txtAgregarTituloFocusNode ??= FocusNode();
     _model.txtAgregarDescripcionController ??= TextEditingController();
+    _model.txtAgregarDescripcionFocusNode ??= FocusNode();
     _model.txtAgregarPrecioController ??= TextEditingController();
+    _model.txtAgregarPrecioFocusNode ??= FocusNode();
     _model.txtAgregarMetrosController ??= TextEditingController();
+    _model.txtAgregarMetrosFocusNode ??= FocusNode();
     _model.txtAgregarDireccionController ??= TextEditingController();
+    _model.txtAgregarDireccionFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -52,6 +57,15 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -188,6 +202,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                               Expanded(
                                 child: TextFormField(
                                   controller: _model.txtAgregarTituloController,
+                                  focusNode: _model.txtAgregarTituloFocusNode,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     hintText: 'Título',
@@ -245,6 +260,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                         fontFamily: 'Lato',
                                         fontSize: 14.0,
                                       ),
+                                  maxLength: 30,
                                   validator: _model
                                       .txtAgregarTituloControllerValidator
                                       .asValidator(context),
@@ -263,6 +279,8 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                 child: TextFormField(
                                   controller:
                                       _model.txtAgregarDescripcionController,
+                                  focusNode:
+                                      _model.txtAgregarDescripcionFocusNode,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     hintText: 'Descripción',
@@ -322,6 +340,9 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                       ),
                                   maxLines: null,
                                   minLines: 1,
+                                  maxLength: 120,
+                                  maxLengthEnforcement:
+                                      MaxLengthEnforcement.enforced,
                                   validator: _model
                                       .txtAgregarDescripcionControllerValidator
                                       .asValidator(context),
@@ -350,6 +371,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                   child: TextFormField(
                                     controller:
                                         _model.txtAgregarPrecioController,
+                                    focusNode: _model.txtAgregarPrecioFocusNode,
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       labelStyle: FlutterFlowTheme.of(context)
@@ -409,6 +431,9 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                     ),
                                     style:
                                         FlutterFlowTheme.of(context).bodySmall,
+                                    maxLength: 50,
+                                    maxLengthEnforcement:
+                                        MaxLengthEnforcement.enforced,
                                     keyboardType: TextInputType.number,
                                     validator: _model
                                         .txtAgregarPrecioControllerValidator
@@ -432,6 +457,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                               Expanded(
                                 child: TextFormField(
                                   controller: _model.txtAgregarMetrosController,
+                                  focusNode: _model.txtAgregarMetrosFocusNode,
                                   textCapitalization: TextCapitalization.none,
                                   obscureText: false,
                                   decoration: InputDecoration(
@@ -490,6 +516,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                         fontFamily: 'Lato',
                                         fontSize: 14.0,
                                       ),
+                                  maxLength: 50,
                                   keyboardType: TextInputType.number,
                                   validator: _model
                                       .txtAgregarMetrosControllerValidator
@@ -734,6 +761,8 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                 child: TextFormField(
                                   controller:
                                       _model.txtAgregarDireccionController,
+                                  focusNode:
+                                      _model.txtAgregarDireccionFocusNode,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     hintText: 'Dirección',
@@ -791,6 +820,9 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                                         fontFamily: 'Lato',
                                         fontSize: 14.0,
                                       ),
+                                  maxLength: 120,
+                                  maxLengthEnforcement:
+                                      MaxLengthEnforcement.enforced,
                                   validator: _model
                                       .txtAgregarDireccionControllerValidator
                                       .asValidator(context),
@@ -1227,7 +1259,7 @@ class _AgregarPropiedadWidgetState extends State<AgregarPropiedadWidget> {
                           },
                           text: 'Agregar Propiedad',
                           options: FFButtonOptions(
-                            width: 170.0,
+                            width: 300.0,
                             height: 50.0,
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),

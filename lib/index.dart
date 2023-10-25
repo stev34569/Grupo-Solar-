@@ -11,9 +11,9 @@ export '/pages/agendar_cita/agendar_cita_widget.dart' show AgendarCitaWidget;
 export '/pages/info/info_widget.dart' show InfoWidget;
 export '/pages/propiedades/comentario_propiedad/comentario_propiedad_widget.dart'
     show ComentarioPropiedadWidget;
-export '/pages/info/agregar_eventos_errores/agregar_eventos_errores_widget.dart'
+export '/pages/agregar_eventos_errores/agregar_eventos_errores_widget.dart'
     show AgregarEventosErroresWidget;
-export '/pages/info/profile/profile_widget.dart' show ProfileWidget;
+export '/pages/profile/profile_widget.dart' show ProfileWidget;
 export '/pages/administrador/admin_events_errors/admin_events_errors_widget.dart'
     show AdminEventsErrorsWidget;
 export '/pages/propiedades/propiedad/propiedad_widget.dart'
@@ -34,3 +34,6 @@ export '/cambiar_contrasenna/cambio_contrasenna/cambio_contrasenna_widget.dart'
 export '/usuarios/perfil_grupo_solar/perfil_grupo_solar_widget.dart'
     show PerfilGrupoSolarWidget;
 export '/prueba/prueba_widget.dart' show PruebaWidget;
+export '/list/list_widget.dart' show ListWidget;
+export '/create3_support_ticket_bug_report/create3_support_ticket_bug_report_widget.dart'
+    show Create3SupportTicketBugReportWidget;

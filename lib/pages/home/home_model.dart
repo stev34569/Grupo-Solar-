@@ -10,6 +10,7 @@ import 'home_widget.dart' show HomeWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
 
   final unfocusNode = FocusNode();
   // State field(s) for txtbuscar widget.
+  FocusNode? txtbuscarFocusNode;
   TextEditingController? txtbuscarController;
   String? Function(BuildContext, String?)? txtbuscarControllerValidator;
   List<PropiedadRecord> simpleSearchResults = [];
@@ -41,7 +43,9 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    txtbuscarFocusNode?.dispose();
     txtbuscarController?.dispose();
+
     navbarModel.dispose();
   }
 

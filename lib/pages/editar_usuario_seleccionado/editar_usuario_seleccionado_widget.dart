@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/usuarios/editar_usuarios/editar_usuarios_widget.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class _EditarUsuarioSeleccionadoWidgetState
     _model = createModel(context, () => EditarUsuarioSeleccionadoModel());
 
     _model.txtBusquedaController ??= TextEditingController();
+    _model.txtBusquedaFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -45,6 +47,15 @@ class _EditarUsuarioSeleccionadoWidgetState
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return StreamBuilder<List<UsersRecord>>(
@@ -120,6 +131,7 @@ class _EditarUsuarioSeleccionadoWidgetState
                         Expanded(
                           child: TextFormField(
                             controller: _model.txtBusquedaController,
+                            focusNode: _model.txtBusquedaFocusNode,
                             onChanged: (_) => EasyDebounce.debounce(
                               '_model.txtBusquedaController',
                               Duration(milliseconds: 100),

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,6 +57,15 @@ class _WelcomeWidgetState extends State<WelcomeWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -98,10 +108,10 @@ class _WelcomeWidgetState extends State<WelcomeWidget>
                       onPressed: () async {
                         context.pushNamed('Login');
                       },
-                      text: 'Ingresar',
+                      text: 'INGRESAR',
                       options: FFButtonOptions(
-                        width: 276.9,
-                        height: 77.0,
+                        width: 300.0,
+                        height: 70.0,
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         iconPadding:
@@ -118,7 +128,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget>
                           color: Colors.transparent,
                           width: 1.0,
                         ),
-                        borderRadius: BorderRadius.circular(80.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       showLoadingIndicator: false,
                     ).animateOnPageLoad(

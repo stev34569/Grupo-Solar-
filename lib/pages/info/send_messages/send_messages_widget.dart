@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,9 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
     _model = createModel(context, () => SendMessagesModel());
 
     _model.textController1 ??= TextEditingController();
+    _model.textFieldFocusNode1 ??= FocusNode();
     _model.textController2 ??= TextEditingController();
+    _model.textFieldFocusNode2 ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
           _model.textController1?.text = '506 60135992';
           _model.textController2?.text = 'Necesito información sobre...';
@@ -45,6 +48,15 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -110,6 +122,7 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                     child: AuthUserStreamWidget(
                       builder: (context) => TextFormField(
                         controller: _model.textController1,
+                        focusNode: _model.textFieldFocusNode1,
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Telefono ',
@@ -124,28 +137,28 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                               color: FlutterFlowTheme.of(context).primary,
                               width: 3.0,
                             ),
-                            borderRadius: BorderRadius.circular(100.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: FlutterFlowTheme.of(context).primary,
                               width: 3.0,
                             ),
-                            borderRadius: BorderRadius.circular(100.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: FlutterFlowTheme.of(context).error,
                               width: 3.0,
                             ),
-                            borderRadius: BorderRadius.circular(100.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: FlutterFlowTheme.of(context).error,
                               width: 3.0,
                             ),
-                            borderRadius: BorderRadius.circular(100.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -159,6 +172,7 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(8.0, 40.0, 8.0, 0.0),
                   child: TextFormField(
                     controller: _model.textController2,
+                    focusNode: _model.textFieldFocusNode2,
                     obscureText: false,
                     decoration: InputDecoration(
                       labelText: '¿Como podemos ayudarle? ',
@@ -177,28 +191,28 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                           color: FlutterFlowTheme.of(context).primary,
                           width: 3.0,
                         ),
-                        borderRadius: BorderRadius.circular(100.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: FlutterFlowTheme.of(context).primary,
                           width: 3.0,
                         ),
-                        borderRadius: BorderRadius.circular(100.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: FlutterFlowTheme.of(context).error,
                           width: 3.0,
                         ),
-                        borderRadius: BorderRadius.circular(100.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: FlutterFlowTheme.of(context).error,
                           width: 3.0,
                         ),
-                        borderRadius: BorderRadius.circular(100.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                     style: FlutterFlowTheme.of(context).bodyMedium,
@@ -243,6 +257,8 @@ class _SendMessagesWidgetState extends State<SendMessagesWidget> {
                       },
                       text: 'Enviar',
                       options: FFButtonOptions(
+                        width: 685.0,
+                        height: 50.0,
                         padding: EdgeInsetsDirectional.fromSTEB(
                             24.0, 24.0, 24.0, 24.0),
                         iconPadding:

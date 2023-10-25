@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'editar_usuario_actual_widget.dart' show EditarUsuarioActualWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class EditarUsuarioActualModel
 
   final formKey = GlobalKey<FormState>();
   // State field(s) for txtNombre widget.
+  FocusNode? txtNombreFocusNode;
   TextEditingController? txtNombreController;
   String? Function(BuildContext, String?)? txtNombreControllerValidator;
   String? _txtNombreControllerValidator(BuildContext context, String? val) {
@@ -34,6 +36,7 @@ class EditarUsuarioActualModel
   }
 
   // State field(s) for txtApellido widget.
+  FocusNode? txtApellidoFocusNode;
   TextEditingController? txtApellidoController;
   String? Function(BuildContext, String?)? txtApellidoControllerValidator;
   String? _txtApellidoControllerValidator(BuildContext context, String? val) {
@@ -52,6 +55,7 @@ class EditarUsuarioActualModel
   }
 
   // State field(s) for txtTelefono widget.
+  FocusNode? txtTelefonoFocusNode;
   TextEditingController? txtTelefonoController;
   String? Function(BuildContext, String?)? txtTelefonoControllerValidator;
   String? _txtTelefonoControllerValidator(BuildContext context, String? val) {
@@ -70,6 +74,7 @@ class EditarUsuarioActualModel
   }
 
   // State field(s) for txtEmail widget.
+  FocusNode? txtEmailFocusNode;
   TextEditingController? txtEmailController;
   String? Function(BuildContext, String?)? txtEmailControllerValidator;
   String? _txtEmailControllerValidator(BuildContext context, String? val) {
@@ -97,9 +102,16 @@ class EditarUsuarioActualModel
   }
 
   void dispose() {
+    txtNombreFocusNode?.dispose();
     txtNombreController?.dispose();
+
+    txtApellidoFocusNode?.dispose();
     txtApellidoController?.dispose();
+
+    txtTelefonoFocusNode?.dispose();
     txtTelefonoController?.dispose();
+
+    txtEmailFocusNode?.dispose();
     txtEmailController?.dispose();
   }
 

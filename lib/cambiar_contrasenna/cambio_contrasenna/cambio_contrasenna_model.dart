@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'cambio_contrasenna_widget.dart' show CambioContrasennaWidget;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class CambioContrasennaModel extends FlutterFlowModel<CambioContrasennaWidget> {
   final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
   // State field(s) for antiguaContrasena widget.
+  FocusNode? antiguaContrasenaFocusNode;
   TextEditingController? antiguaContrasenaController;
   late bool antiguaContrasenaVisibility;
   String? Function(BuildContext, String?)? antiguaContrasenaControllerValidator;
@@ -36,6 +38,7 @@ class CambioContrasennaModel extends FlutterFlowModel<CambioContrasennaWidget> {
   }
 
   // State field(s) for nuevaContrasena widget.
+  FocusNode? nuevaContrasenaFocusNode;
   TextEditingController? nuevaContrasenaController;
   late bool nuevaContrasenaVisibility;
   String? Function(BuildContext, String?)? nuevaContrasenaControllerValidator;
@@ -67,7 +70,10 @@ class CambioContrasennaModel extends FlutterFlowModel<CambioContrasennaWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    antiguaContrasenaFocusNode?.dispose();
     antiguaContrasenaController?.dispose();
+
+    nuevaContrasenaFocusNode?.dispose();
     nuevaContrasenaController?.dispose();
   }
 
